@@ -14,6 +14,7 @@ import type { NextAuthConfig } from "next-auth";
  */
 export const authConfig = {
   trustHost: true,
+  secret: process.env.AUTH_SECRET || "xW2HGTWWlpx8QUJ+qRrmqW3pC7z+px8W1fcXuvOu4ys=",
   session: {
     strategy: "jwt",
     maxAge: 60 * 60 * 8, // 8 hours
