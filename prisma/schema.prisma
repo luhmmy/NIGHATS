@@ -1,0 +1,361 @@
+// Nighats 1.0 — data model
+// Security-first: DB-backed RBAC (Role -> Permission), tamper-evident audit log,
+// account-lockout + session-revocation fields on User.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Access management (RBAC)
+// ---------------------------------------------------------------------------
+
+/// A role is a named bundle of permissions. Seeded with the known roles but
+/// editable at runtime so access management is configurable, not hard-coded.
+model Role {
+  id          String           @id @default(cuid())
+  name        String           @unique // e.g. "SUPER_ADMIN", "REVIEWER"
+  label       String // human-readable, e.g. "Super Admin"
+  description String?
+  isSystem    Boolean          @default(false) // system roles can't be deleted
+  users       User[]
+  permissions RolePermission[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}
+
+/// A single, granular capability, e.g. "cfp:review", "user:manage".
+model Permission {
+  id          String           @id @default(cuid())
+  key         String           @unique // "resource:action"
+  description String?
+  roles       RolePermission[]
+  createdAt   DateTime         @default(now())
+}
+
+/// Join table: which permissions a role grants.
+model RolePermission {
+  roleId       String
+  permissionId String
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+}
+
+// ---------------------------------------------------------------------------
+// Users & auth
+// ---------------------------------------------------------------------------
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified DateTime?
+  name          String?
+  handle        String?   @unique // e.g. "user@nighats"
+  passwordHash  String? // argon2id; null if OAuth-only
+  isActive      Boolean   @default(true)
+
+  // RBAC
+  roleId String
+  role   Role   @relation(fields: [roleId], references: [id])
+
+  // Session revocation: bump to invalidate all existing JWTs for this user.
+  tokenVersion Int @default(0)
+
+  // Brute-force / lockout protection
+  failedLoginAttempts Int       @default(0)
+  lockedUntil         DateTime?
+  lastLoginAt         DateTime?
+  lastLoginIp         String?
+
+  // 2FA (TOTP) — schema ready; enforcement can be switched on later.
+  totpSecret  String? // encrypted at rest at the app layer
+  totpEnabled Boolean @default(false)
+
+  // Auth.js adapter relations (for future OAuth/email providers)
+  accounts Account[]
+  sessions Session[]
+
+  // Domain relations
+  submissions   CfpSubmission[] @relation("SubmissionAuthor")
+  reviews       Review[]
+  registrations Registration[]
+  ledVillages   Village[]       @relation("VillageLead")
+  teamMembers   TeamMember[]
+  auditLogs     AuditLog[]      @relation("AuditActor")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([roleId])
+}
+
+// Standard Auth.js adapter models (enable OAuth/email later without migration churn)
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ---------------------------------------------------------------------------
+// Tamper-evident audit log (hash chain)
+// ---------------------------------------------------------------------------
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  // Monotonic append order — the authoritative chain ordering (timestamps can tie).
+  seq        Int      @unique @default(autoincrement())
+  actorId    String?
+  actor      User?    @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+  action     String // e.g. "auth.login", "cfp.decision"
+  targetType String? // e.g. "CfpSubmission"
+  targetId   String?
+  metadata   Json?
+  ip         String?
+  userAgent  String?
+  // Hash chain: hash = H(prevHash + canonical(record)). Breaks if any row is edited.
+  prevHash   String?
+  hash       String   @unique
+  createdAt  DateTime @default(now())
+
+  @@index([actorId])
+  @@index([action])
+  @@index([createdAt])
+}
+
+// ---------------------------------------------------------------------------
+// Domain: CFP / Speakers
+// ---------------------------------------------------------------------------
+
+enum CfpTrack {
+  BINARY_REVERSE
+  CLOUD_IDENTITY
+  HARDWARE_RF
+  OFFENSIVE_AI
+  SCADA_TELECOM
+}
+
+enum CfpFormat {
+  KEYNOTE_45M
+  WORKSHOP_2H
+  TURBO_20M
+}
+
+enum CfpStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  SHORTLISTED
+  REVISIONS
+  ACCEPTED
+  REJECTED
+}
+
+model CfpSubmission {
+  id          String    @id @default(cuid())
+  refCode     String    @unique // e.g. "NIG-104"
+  title       String
+  abstract    String
+  track       CfpTrack
+  format      CfpFormat
+  status      CfpStatus @default(SUBMITTED)
+  hazardScore String? // e.g. "HIGH (Containment Tier IV)"
+  opsRequired Json? // structured operational requirements
+  authorId    String
+  author      User      @relation("SubmissionAuthor", fields: [authorId], references: [id])
+  reviews     Review[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([status])
+  @@index([track])
+}
+
+model Review {
+  id           String        @id @default(cuid())
+  submissionId String
+  submission   CfpSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  reviewerId   String
+  reviewer     User          @relation(fields: [reviewerId], references: [id])
+  score        Decimal       @db.Decimal(2, 1) // 0.0 - 5.0
+  comments     String?
+  sealed       Boolean       @default(false) // double-blind: sealed until arbitration
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@unique([submissionId, reviewerId]) // one review per reviewer per submission
+}
+
+// ---------------------------------------------------------------------------
+// Domain: Competitions / Teams
+// ---------------------------------------------------------------------------
+
+model Competition {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  kind      String // e.g. "CTF", "Pwn"
+  teams     Team[]
+  createdAt DateTime @default(now())
+}
+
+model Team {
+  id            String       @id @default(cuid())
+  name          String
+  competitionId String
+  competition   Competition  @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+  members       TeamMember[]
+  isOpen        Boolean      @default(true) // recruiting?
+  createdAt     DateTime     @default(now())
+
+  @@unique([competitionId, name])
+}
+
+model TeamMember {
+  teamId   String
+  userId   String
+  team     Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  isCaptain Boolean @default(false)
+  joinedAt DateTime @default(now())
+
+  @@id([teamId, userId])
+}
+
+// ---------------------------------------------------------------------------
+// Domain: Hacking Villages
+// ---------------------------------------------------------------------------
+
+enum VillageStatus {
+  PROPOSED
+  AUDITING
+  SANCTIONED
+  REJECTED
+}
+
+model Village {
+  id          String        @id @default(cuid())
+  name        String
+  slug        String        @unique
+  track       String // "Hardware / RF", "ICS / SCADA", ...
+  description String?
+  status      VillageStatus @default(PROPOSED)
+  leadId      String?
+  lead        User?         @relation("VillageLead", fields: [leadId], references: [id], onDelete: SetNull)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([status])
+}
+
+// ---------------------------------------------------------------------------
+// Domain: Sponsors
+// ---------------------------------------------------------------------------
+
+enum SponsorTier {
+  ENTERPRISE
+  COMMUNITY
+}
+
+enum SponsorStatus {
+  ENQUIRY
+  NEGOTIATION
+  COMMITTED
+  DECLINED
+}
+
+model Sponsor {
+  id          String        @id @default(cuid())
+  company     String
+  tier        SponsorTier
+  status      SponsorStatus @default(ENQUIRY)
+  contactName String?
+  contactEmail String?
+  estValue    Int? // estimated pipeline value (currency minor units or whole)
+  notes       String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([status])
+}
+
+// ---------------------------------------------------------------------------
+// Domain: Registrations
+// ---------------------------------------------------------------------------
+
+enum RegistrationStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+model Registration {
+  id          String             @id @default(cuid())
+  userId      String?
+  user        User?              @relation(fields: [userId], references: [id], onDelete: SetNull)
+  email       String
+  fullName    String?
+  handle      String?
+  affiliation String?
+  roles       String[]           @default(["attendee"])
+  status      RegistrationStatus @default(PENDING)
+  checkedIn   Boolean            @default(false)
+  checkedInAt DateTime?
+  badgeNumber String?
+  notes       String?
+  createdAt   DateTime           @default(now())
+
+  @@index([status])
+  @@index([email])
+  @@index([checkedIn])
+}
+
+model ContactInquiry {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  category  String   @default("GENERAL") // GENERAL, SPONSOR, SPEAKER, VILLAGE, VOLUNTEER, MEDIA
+  subject   String?
+  message   String
+  status    String   @default("NEW") // NEW, REPLIED, ARCHIVED
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([category])
+}
+

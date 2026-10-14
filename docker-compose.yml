@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: nighats-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: nighats
+      POSTGRES_PASSWORD: nighats
+      POSTGRES_DB: nighats
+    ports:
+      - "5433:5432"
+    volumes:
+      - nighats_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nighats"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  nighats_pgdata:
