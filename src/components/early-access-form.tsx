@@ -64,22 +64,22 @@ export function EarlyAccessForm() {
           <span>1. Select Primary Operational Vector(s):</span>
           <span className="text-primary text-[10px] normal-case">(select all that apply)</span>
         </label>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
           {ROLES.map((r) => (
             <label
               key={r.id}
-              className="group flex items-center gap-2.5 rounded-2xl border border-line/80 bg-surface/80 p-3 text-xs font-[family-name:var(--font-mono)] text-fg cursor-pointer transition-all duration-200 hover:border-primary/60 hover:bg-surface-2 hover:-translate-y-0.5"
+              className="group flex items-center gap-3 rounded-2xl border border-line/80 bg-surface/80 p-3 sm:p-3.5 text-xs font-[family-name:var(--font-mono)] text-fg cursor-pointer transition-all duration-200 hover:border-primary/60 hover:bg-surface-2 hover:-translate-y-0.5 active:scale-[0.98]"
             >
               <input
                 type="checkbox"
                 name="roles"
                 value={r.id}
                 defaultChecked={r.defaultChecked}
-                className="h-4 w-4 rounded-md accent-primary bg-void border-line text-primary focus:ring-0 cursor-pointer"
+                className="h-4 w-4 rounded-md accent-primary bg-void border-line text-primary focus:ring-0 cursor-pointer shrink-0"
               />
-              <span className="truncate flex items-center gap-1.5">
-                <span className="text-sm opacity-80 group-hover:scale-110 transition-transform">{r.icon}</span>
-                <span>{r.label}</span>
+              <span className="flex items-center gap-2 min-w-0">
+                <span className="text-sm opacity-80 group-hover:scale-110 transition-transform shrink-0">{r.icon}</span>
+                <span className="whitespace-normal leading-tight font-medium text-fg-strong">{r.label}</span>
               </span>
             </label>
           ))}
@@ -127,7 +127,7 @@ export function EarlyAccessForm() {
         <input
           name="affiliation"
           type="text"
-          placeholder="e.g. CyberSec Lab Nigeria, Independent, Unilag, Fintech BlueTeam"
+          placeholder="e.g. CyberSec Lab Nigeria, Independent, Student"
           className="w-full rounded-2xl border border-line-bright/80 bg-surface/90 px-4 py-3 font-[family-name:var(--font-mono)] text-sm text-fg-strong placeholder:text-fg-muted/60 focus:border-primary focus:outline-none transition-colors"
         />
       </div>
