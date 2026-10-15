@@ -172,15 +172,16 @@ export default function Home() {
 
           {/* Left: Official Insignia Card — Aligned from Nigeria heading to Update button */}
           <div className="order-3 lg:order-2 lg:col-start-1 lg:col-span-5 lg:row-start-2 flex h-full">
-            <div className="group relative w-full rounded-3xl border border-line/90 bg-surface/90 p-6 sm:p-7 shadow-[0_20px_50px_rgba(0,0,0,0.6)] backdrop-blur-xl transition-all duration-300 hover:border-primary/50 hover:shadow-[0_25px_60px_rgba(18,184,90,0.15)] flex flex-col justify-between">
+            <div className="group relative w-full rounded-3xl border border-line/90 bg-surface/90 p-6 sm:p-7 shadow-[0_20px_50px_rgba(0,0,0,0.6)] backdrop-blur-xl transition-all duration-300 hover:border-primary/50 hover:shadow-[0_25px_60px_rgba(18,184,90,0.15)] active:scale-[0.99] flex flex-col justify-between">
               <div className="relative flex flex-1 items-center justify-center overflow-hidden rounded-2xl bg-void/90 p-6 border border-line/70 min-h-[220px]">
+                <div className="radar" />
                 <Image
                   src="/nighats-logo.png"
                   alt="NIGHATS 1.0 Hacker Festival Official Insignia"
                   width={900}
                   height={629}
                   priority
-                  className="h-auto max-h-64 sm:max-h-72 w-full object-contain filter drop-shadow-[0_0_30px_rgba(18,184,90,0.3)] transition-transform duration-500 group-hover:scale-105"
+                  className="relative z-10 h-auto max-h-64 sm:max-h-72 w-full object-contain filter drop-shadow-[0_0_30px_rgba(18,184,90,0.3)] transition-transform duration-500 group-hover:scale-105 animate-logo-breathe"
                 />
               </div>
               <div className="mt-4 flex items-center justify-between border-t border-line/70 pt-3.5 font-[family-name:var(--font-mono)] text-xs text-fg-dim">
@@ -565,7 +566,7 @@ export default function Home() {
                   alt="NIGHATS Mark"
                   width={420}
                   height={241}
-                  className="h-8 w-auto"
+                  className="h-8 w-auto transition-transform duration-300 hover:scale-105 active:scale-95 animate-logo-breathe-subtle"
                 />
                 <span className="font-[family-name:var(--font-display)] text-lg font-bold uppercase tracking-tight text-fg-strong">
                   NIGHATS <span className="text-primary">1.0</span>

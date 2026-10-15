@@ -19,7 +19,7 @@ export function LandingNav() {
     <header className="sticky top-0 z-50 w-full bg-void/90 backdrop-blur-xl border-b border-line/80 shadow-[0_4px_24px_rgba(0,0,0,0.5)]">
       {/* Main Nav Bar */}
       <div className="mx-auto flex h-16 sm:h-20 max-w-7xl items-center justify-between px-3.5 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-2 sm:gap-3.5 group">
+        <Link href="/" className="flex items-center gap-2 sm:gap-3.5 group active:scale-95 transition-transform duration-200">
           <div className="relative">
             <Image
               src="/nighats-mark.png"
@@ -27,7 +27,7 @@ export function LandingNav() {
               width={420}
               height={241}
               priority
-              className="h-7 sm:h-9 w-auto transition-transform duration-300 group-hover:scale-105"
+              className="h-7 sm:h-9 w-auto transition-transform duration-300 group-hover:scale-105 animate-logo-breathe-subtle"
             />
           </div>
           <div className="flex flex-col">
