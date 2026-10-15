@@ -159,11 +159,15 @@ export default function Home() {
         <div className="relative mx-auto max-w-7xl grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-x-10 lg:gap-y-4 lg:items-stretch">
           {/* Top Signal Badges — On top of NIGERIA'S HACKER FESTIVAL */}
           <div className="order-1 lg:col-start-6 lg:col-span-7 lg:row-start-1 flex flex-wrap items-center gap-2">
-            <span className="rounded-full border border-line bg-surface/80 px-4 py-1.5 font-[family-name:var(--font-mono)] text-xs uppercase tracking-wide text-primary font-medium">
-              NIGHATS 1.0
+            <span className="flex items-center gap-2 rounded-full border border-primary/50 bg-primary/10 px-3.5 py-1.5 font-[family-name:var(--font-mono)] text-xs uppercase tracking-wide text-primary font-bold shadow-[0_0_14px_rgba(18,184,90,0.25)]">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+              </span>
+              COMING SOON • 2027
             </span>
             <span className="rounded-full border border-line bg-surface/80 px-4 py-1.5 font-[family-name:var(--font-mono)] text-xs uppercase tracking-wide text-fg-dim">
-              Lagos, Nigeria
+              NIGHATS 1.0
             </span>
             <span className="rounded-full border border-line bg-surface/80 px-4 py-1.5 font-[family-name:var(--font-mono)] text-xs uppercase tracking-wide text-secondary font-medium">
               Planned: Oct–Dec 2027
@@ -213,9 +217,13 @@ export default function Home() {
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <a
                 href="#early-dispatch"
-                className="flex items-center gap-2 rounded-full bg-primary px-8 py-4 font-[family-name:var(--font-mono)] text-xs font-bold uppercase tracking-wider text-on-primary transition-all duration-200 hover:bg-primary-bright hover:shadow-[0_0_24px_rgba(18,184,90,0.45)] hover:-translate-y-0.5 active:scale-95"
+                className="group flex items-center gap-2.5 rounded-full bg-primary px-7 py-3.5 sm:px-8 sm:py-4 font-[family-name:var(--font-mono)] text-xs font-bold uppercase tracking-wider text-on-primary transition-all duration-200 hover:bg-primary-bright hover:shadow-[0_0_24px_rgba(18,184,90,0.5)] hover:-translate-y-0.5 active:scale-95 shadow-[0_0_14px_rgba(18,184,90,0.25)]"
               >
-                <span>Get Updates</span>
+                <span className="rounded-full bg-black/25 px-2 py-0.5 text-[10px] uppercase tracking-wider font-extrabold text-on-primary">
+                  Coming Soon
+                </span>
+                <span>Get Early Access</span>
+                <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
               </a>
               <a
                 href="#matrix"
@@ -551,6 +559,43 @@ export default function Home() {
                 </Link>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION: FINAL COMING SOON CTA BANNER */}
+      <section className="relative w-full overflow-hidden border-b border-line bg-surface/40 py-20 px-4 lg:px-8">
+        <div className="pointer-events-none absolute inset-0 opacity-20">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[500px] rounded-full bg-primary/20 blur-[140px]" />
+        </div>
+        <div className="relative mx-auto max-w-4xl rounded-3xl border border-line-bright/80 bg-surface/90 p-8 sm:p-14 shadow-[0_25px_60px_rgba(0,0,0,0.6)] backdrop-blur-2xl text-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/10 px-4 py-1.5 font-[family-name:var(--font-mono)] text-xs uppercase tracking-wider text-primary font-bold mb-5 shadow-[0_0_12px_rgba(18,184,90,0.25)]">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+            </span>
+            FESTIVAL COMING SOON • LAGOS 2027
+          </div>
+          <h2 className="font-[family-name:var(--font-display)] text-3xl sm:text-5xl font-extrabold uppercase tracking-tight text-fg-strong">
+            BE FIRST TO RECEIVE <span className="text-primary">DISPATCHES</span>
+          </h2>
+          <p className="mt-4 max-w-xl mx-auto font-[family-name:var(--font-body)] text-sm sm:text-base text-fg-dim leading-relaxed">
+            Tickets, hardware badge reservations, speaker line-ups, and CTF challenge releases will be published in waves to early subscribers.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <a
+              href="#early-dispatch"
+              className="group flex items-center gap-2.5 rounded-full bg-primary px-8 py-4 font-[family-name:var(--font-mono)] text-xs font-bold uppercase tracking-wider text-on-primary transition-all duration-200 hover:bg-primary-bright hover:shadow-[0_0_24px_rgba(18,184,90,0.5)] hover:-translate-y-0.5 active:scale-95"
+            >
+              <span>Join Early Access Dispatch</span>
+              <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+            </a>
+            <Link
+              href="/contact"
+              className="flex items-center gap-2 rounded-full border border-line bg-surface/80 px-7 py-4 font-[family-name:var(--font-mono)] text-xs uppercase tracking-wider text-fg transition-all duration-200 hover:border-primary hover:text-primary hover:bg-surface-2 hover:-translate-y-0.5 active:scale-95"
+            >
+              <span>Partner &amp; Sponsor Inquiries</span>
+            </Link>
           </div>
         </div>
       </section>

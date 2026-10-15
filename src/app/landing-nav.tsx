@@ -64,9 +64,10 @@ export function LandingNav() {
         <div className="flex items-center gap-2 sm:gap-3">
           <a
             href="/#early-dispatch"
-            className="rounded-full bg-primary px-3.5 py-1.5 sm:px-5 sm:py-2.5 font-[family-name:var(--font-mono)] text-[11px] sm:text-xs font-bold uppercase tracking-wider text-on-primary whitespace-nowrap transition-all duration-200 hover:bg-primary-bright hover:shadow-[0_0_20px_rgba(18,184,90,0.5)] active:scale-95 flex items-center justify-center shadow-[0_0_12px_rgba(18,184,90,0.25)]"
+            className="rounded-full bg-primary px-3.5 py-1.5 sm:px-5 sm:py-2.5 font-[family-name:var(--font-mono)] text-[11px] sm:text-xs font-bold uppercase tracking-wider text-on-primary whitespace-nowrap transition-all duration-200 hover:bg-primary-bright hover:shadow-[0_0_20px_rgba(18,184,90,0.5)] active:scale-95 flex items-center gap-1.5 shadow-[0_0_12px_rgba(18,184,90,0.25)]"
           >
-            Get Updates
+            <span className="h-1.5 w-1.5 rounded-full bg-black/70 animate-pulse shrink-0" />
+            <span>Coming Soon</span>
           </a>
 
           {/* Animated Mobile Hamburger Button */}
@@ -117,6 +118,14 @@ export function LandingNav() {
               <span className="text-[10px] text-fg-muted font-normal font-sans">→</span>
             </a>
           ))}
+          <a
+            href="/#early-dispatch"
+            onClick={() => setOpen(false)}
+            className="mt-2 flex items-center justify-center gap-2 rounded-full bg-primary px-4 py-3 font-[family-name:var(--font-mono)] text-xs font-bold uppercase tracking-wider text-on-primary transition-all duration-200 hover:bg-primary-bright active:scale-95 shadow-[0_0_16px_rgba(18,184,90,0.3)]"
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-black/70 animate-pulse shrink-0" />
+            <span>Coming Soon — Get Updates</span>
+          </a>
           <div className="pt-2.5 mt-1 border-t border-line/60 flex items-center justify-between px-4 text-[10px] font-[family-name:var(--font-mono)] text-fg-muted">
             <span>NIGERIA&apos;S HACKER FESTIVAL</span>
             <span className="text-primary font-semibold">OCT–DEC 2027</span>
