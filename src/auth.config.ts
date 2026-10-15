@@ -12,9 +12,20 @@ import type { NextAuthConfig } from "next-auth";
  * (DB-backed), so middleware only does the coarse "is this a valid session"
  * gate here.
  */
+// AUTH_SECRET signs & encrypts the session JWT. A hardcoded fallback would let
+// anyone who reads the source forge an admin session, so there is none: in
+// production a missing secret is a hard, fail-closed error; in dev Auth.js
+// derives an ephemeral one and warns.
+const secret = process.env.AUTH_SECRET;
+if (!secret && process.env.NODE_ENV === "production") {
+  throw new Error(
+    "AUTH_SECRET is not set. Generate one with `openssl rand -base64 32` and set it in the environment."
+  );
+}
+
 export const authConfig = {
   trustHost: true,
-  secret: process.env.AUTH_SECRET || "xW2HGTWWlpx8QUJ+qRrmqW3pC7z+px8W1fcXuvOu4ys=",
+  secret,
   session: {
     strategy: "jwt",
     maxAge: 60 * 60 * 8, // 8 hours

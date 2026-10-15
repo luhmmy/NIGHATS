@@ -32,6 +32,22 @@ function buildCsp(nonce: string): string {
   return directives.join("; ");
 }
 
+/**
+ * Forward the per-request nonce and CSP on the *request* headers.
+ *
+ * Next.js reads the nonce from the request's `Content-Security-Policy` header to
+ * automatically stamp `nonce="…"` on the scripts it injects. Without it, the
+ * strict production CSP (no `unsafe-inline`/`unsafe-eval` for scripts) would
+ * block Next's own hydration bootstrap. `x-nonce` is kept so the root layout can
+ * also read it directly.
+ */
+function withSecurityHeaders(src: Headers, nonce: string, csp: string): Headers {
+  const h = new Headers(src);
+  h.set("x-nonce", nonce);
+  h.set("Content-Security-Policy", csp);
+  return h;
+}
+
 export default auth((req) => {
   // Fresh nonce per request (Web Crypto is available on the edge runtime).
   const bytes = new Uint8Array(16);
@@ -77,8 +93,7 @@ export default auth((req) => {
       // Root secret URL: rewrite to login page so browser stays on secret URL
       const url = new URL("/login", req.nextUrl.origin);
       url.search = req.nextUrl.search;
-      const requestHeaders = new Headers(req.headers);
-      requestHeaders.set("x-nonce", nonce);
+      const requestHeaders = withSecurityHeaders(req.headers, nonce, csp);
       const res = NextResponse.rewrite(url, { request: { headers: requestHeaders } });
       res.headers.set("Content-Security-Policy", csp);
       return res;
@@ -88,8 +103,7 @@ export default auth((req) => {
     const target = subpath ? `/admin${subpath}` : "/admin";
     const url = new URL(target, req.nextUrl.origin);
     url.search = req.nextUrl.search;
-    const requestHeaders = new Headers(req.headers);
-    requestHeaders.set("x-nonce", nonce);
+    const requestHeaders = withSecurityHeaders(req.headers, nonce, csp);
     const res = NextResponse.rewrite(url, { request: { headers: requestHeaders } });
     res.headers.set("Content-Security-Policy", csp);
     return res;
@@ -105,8 +119,7 @@ export default auth((req) => {
   }
 
   // Pass the nonce downstream so the root layout can stamp it on scripts.
-  const requestHeaders = new Headers(req.headers);
-  requestHeaders.set("x-nonce", nonce);
+  const requestHeaders = withSecurityHeaders(req.headers, nonce, csp);
 
   const res = NextResponse.next({ request: { headers: requestHeaders } });
   res.headers.set("Content-Security-Policy", csp);

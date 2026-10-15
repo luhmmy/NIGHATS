@@ -1,10 +1,12 @@
 "use server";
 
+import { randomBytes, randomInt } from "node:crypto";
 import { headers } from "next/headers";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { recordAudit } from "@/lib/audit";
 import { rateLimit } from "@/lib/rate-limit";
+import { getClientIp } from "@/lib/request";
 
 export type RegisterState = {
   error?: string;
@@ -13,12 +15,31 @@ export type RegisterState = {
   hash?: string;
 };
 
+// Registration "interests" are display tags, not RBAC roles. Constrain them to
+// a known allowlist so a crafted POST to this Server Action can't persist
+// arbitrary attacker-controlled strings into the admin console.
+const ALLOWED_ROLES = [
+  "attendee",
+  "speaker",
+  "volunteer",
+  "sponsor",
+  "village",
+  "villager",
+  "ctf",
+  "competitor",
+  "press",
+] as const;
+
 const schema = z.object({
   fullName: z.string().max(120).optional(),
   handle: z.string().max(60).optional(),
   email: z.string().email().max(320),
   affiliation: z.string().max(200).optional(),
-  roles: z.array(z.string()).default(["attendee"]),
+  roles: z
+    .array(z.enum(ALLOWED_ROLES))
+    .min(1)
+    .max(ALLOWED_ROLES.length)
+    .default(["attendee"]),
 });
 
 export async function register(
@@ -26,9 +47,9 @@ export async function register(
   formData: FormData
 ): Promise<RegisterState> {
   const hdrs = await headers();
-  const ip = hdrs.get("x-forwarded-for")?.split(",")[0]?.trim() || "local";
+  const ip = getClientIp(hdrs);
 
-  const rl = rateLimit(`register:${ip}`, 5, 60_000);
+  const rl = await rateLimit(`register:${ip}`, 5, 60_000);
   if (!rl.ok) return { error: `Too many submissions. Retry in ${rl.retryAfterSec}s.` };
 
   const rawRoles = formData.getAll("roles");
@@ -46,9 +67,10 @@ export async function register(
 
   const email = parsed.data.email.toLowerCase();
 
-  // Create hash code for receipt
-  const shortHash = Math.random().toString(16).substring(2, 10);
-  const queueId = `#NG-2027-${Math.floor(1000 + Math.random() * 9000)}`;
+  // Receipt identifiers — unguessable (CSPRNG), so a confirmation code can't be
+  // predicted or enumerated from another user's.
+  const shortHash = randomBytes(4).toString("hex");
+  const queueId = `#NG-2027-${randomInt(1000, 10000)}`;
 
   // Idempotent: don't leak whether an email already exists
   const existing = await prisma.registration.findFirst({ where: { email } });

@@ -5,6 +5,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { recordAudit } from "@/lib/audit";
 import { rateLimit } from "@/lib/rate-limit";
+import { getClientIp } from "@/lib/request";
 
 export type ContactState = {
   error?: string;
@@ -25,9 +26,9 @@ export async function submitContact(
   formData: FormData
 ): Promise<ContactState> {
   const hdrs = await headers();
-  const ip = hdrs.get("x-forwarded-for")?.split(",")[0]?.trim() || "local";
+  const ip = getClientIp(hdrs);
 
-  const rl = rateLimit(`contact:${ip}`, 5, 60_000);
+  const rl = await rateLimit(`contact:${ip}`, 5, 60_000);
   if (!rl.ok) return { error: `Too many submissions. Please wait ${rl.retryAfterSec}s.` };
 
   const parsed = schema.safeParse({

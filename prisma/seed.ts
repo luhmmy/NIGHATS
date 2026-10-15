@@ -50,7 +50,16 @@ async function main() {
 
   // 3. Initial SUPER_ADMIN
   const email = (process.env.SEED_ADMIN_EMAIL ?? "admin@nighats.dev").toLowerCase();
-  const password = process.env.SEED_ADMIN_PASSWORD ?? "change-me-ChangeMe!2027";
+  const DEV_DEFAULT_PASSWORD = "change-me-ChangeMe!2027";
+  const password = process.env.SEED_ADMIN_PASSWORD ?? DEV_DEFAULT_PASSWORD;
+
+  // Never seed a super admin with the well-known default password outside dev —
+  // that would be a publicly-known credential on a privileged account.
+  if (process.env.NODE_ENV === "production" && password === DEV_DEFAULT_PASSWORD) {
+    throw new Error(
+      "Refusing to seed: set SEED_ADMIN_PASSWORD to a strong, unique value before seeding in production."
+    );
+  }
 
   const superRole = await prisma.role.findUniqueOrThrow({
     where: { name: ROLES.SUPER_ADMIN },

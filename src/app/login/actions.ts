@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import { z } from "zod";
 import { signIn } from "@/auth";
 import { rateLimit } from "@/lib/rate-limit";
+import { getClientIp } from "@/lib/request";
 
 import { getAdminPath } from "@/lib/admin-route";
 
@@ -19,11 +20,10 @@ export async function authenticate(
   _prev: LoginState,
   formData: FormData
 ): Promise<LoginState> {
-  const ip =
-    (await headers()).get("x-forwarded-for")?.split(",")[0]?.trim() || "local";
+  const ip = getClientIp(await headers());
 
   // First line of defence; per-user DB lockout is the second (see auth.ts).
-  const rl = rateLimit(`login:${ip}`, 10, 60_000);
+  const rl = await rateLimit(`login:${ip}`, 10, 60_000);
   if (!rl.ok) {
     return { error: `Too many attempts. Retry in ${rl.retryAfterSec}s.` };
   }
