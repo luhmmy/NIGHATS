@@ -7,6 +7,7 @@ import { EarlyAccessForm } from "@/components/early-access-form";
 import { Ticker } from "@/components/ticker";
 import { CyberRotatingText } from "@/components/cyber-rotating-text";
 import { InteractiveTerminal } from "@/components/interactive-terminal";
+import { SidewaysDeck } from "@/components/sideways-deck";
 
 const PILLARS = [
   {
@@ -159,15 +160,11 @@ export default function Home() {
         <div className="relative mx-auto max-w-7xl grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-x-10 lg:gap-y-4 lg:items-stretch">
           {/* Top Signal Badges — On top of NIGERIA'S HACKER FESTIVAL */}
           <div className="order-1 lg:col-start-6 lg:col-span-7 lg:row-start-1 flex flex-wrap items-center gap-2">
-            <span className="flex items-center gap-2 rounded-full border border-primary/50 bg-primary/10 px-3.5 py-1.5 font-[family-name:var(--font-mono)] text-xs uppercase tracking-wide text-primary font-bold shadow-[0_0_14px_rgba(18,184,90,0.25)]">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-              </span>
-              COMING SOON • 2027
+            <span className="rounded-full border border-line bg-surface/80 px-4 py-1.5 font-[family-name:var(--font-mono)] text-xs uppercase tracking-wide text-primary font-medium">
+              NIGHATS 1.0
             </span>
             <span className="rounded-full border border-line bg-surface/80 px-4 py-1.5 font-[family-name:var(--font-mono)] text-xs uppercase tracking-wide text-fg-dim">
-              NIGHATS 1.0
+              Lagos, Nigeria
             </span>
             <span className="rounded-full border border-line bg-surface/80 px-4 py-1.5 font-[family-name:var(--font-mono)] text-xs uppercase tracking-wide text-secondary font-medium">
               Planned: Oct–Dec 2027
@@ -217,13 +214,9 @@ export default function Home() {
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <a
                 href="#early-dispatch"
-                className="group flex items-center gap-2.5 rounded-full bg-primary px-7 py-3.5 sm:px-8 sm:py-4 font-[family-name:var(--font-mono)] text-xs font-bold uppercase tracking-wider text-on-primary transition-all duration-200 hover:bg-primary-bright hover:shadow-[0_0_24px_rgba(18,184,90,0.5)] hover:-translate-y-0.5 active:scale-95 shadow-[0_0_14px_rgba(18,184,90,0.25)]"
+                className="flex items-center gap-2 rounded-full bg-primary px-8 py-4 font-[family-name:var(--font-mono)] text-xs font-bold uppercase tracking-wider text-on-primary transition-all duration-200 hover:bg-primary-bright hover:shadow-[0_0_24px_rgba(18,184,90,0.45)] hover:-translate-y-0.5 active:scale-95 shadow-[0_0_14px_rgba(18,184,90,0.25)]"
               >
-                <span className="rounded-full bg-black/25 px-2 py-0.5 text-[10px] uppercase tracking-wider font-extrabold text-on-primary">
-                  Coming Soon
-                </span>
-                <span>Get Early Access</span>
-                <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+                <span>Get Updates</span>
               </a>
               <a
                 href="#matrix"
@@ -346,36 +339,37 @@ export default function Home() {
             </p>
           </div>
 
-          {/* 4 Core Pillars with Curvier Rounded-3xl Cards */}
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {PILLARS.map((p, i) => (
-              <Reveal key={p.num} delay={i * 80}>
-                <div className="group flex h-full flex-col justify-between rounded-3xl border border-line/80 bg-surface/85 p-6 shadow-sm transition-all duration-300 hover:border-primary/60 hover:bg-surface-2 hover:-translate-y-1.5 hover:shadow-[0_16px_40px_rgba(18,184,90,0.12)]">
-                  <div>
-                    <div className="mb-4 flex items-center justify-between">
-                      <span className="font-[family-name:var(--font-mono)] text-xs font-bold text-primary">
-                        {p.num}
-                      </span>
-                      <span className="rounded-full bg-void px-2.5 py-1 font-[family-name:var(--font-mono)] text-[10px] text-fg-muted border border-line">
-                        {p.tag}
-                      </span>
-                    </div>
-                    <div className="mb-2 text-2xl">{p.icon}</div>
-                    <h3 className="font-[family-name:var(--font-display)] text-lg font-bold text-fg-strong">
-                      {p.title}
-                    </h3>
-                    <p className="mt-2.5 font-[family-name:var(--font-body)] text-xs leading-relaxed text-fg-dim">
-                      {p.desc}
-                    </p>
+          {/* 4 Core Pillars moving animatedly sideways + interactive touch/drag */}
+          <SidewaysDeck speed={0.6} gap="gap-5">
+            {PILLARS.map((p) => (
+              <div
+                key={p.num}
+                className="group flex h-[330px] w-[280px] sm:w-[320px] flex-col justify-between rounded-3xl border border-line/80 bg-surface/85 p-6 shadow-sm transition-all duration-300 hover:border-primary/60 hover:bg-surface-2 hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(18,184,90,0.12)] active:scale-[0.98]"
+              >
+                <div>
+                  <div className="mb-4 flex items-center justify-between">
+                    <span className="font-[family-name:var(--font-mono)] text-xs font-bold text-primary">
+                      {p.num}
+                    </span>
+                    <span className="rounded-full bg-void px-2.5 py-1 font-[family-name:var(--font-mono)] text-[10px] text-fg-muted border border-line">
+                      {p.tag}
+                    </span>
                   </div>
-                  <div className="mt-6 border-t border-line/60 pt-3 font-[family-name:var(--font-mono)] text-[11px] text-fg-muted flex justify-between items-center">
-                    <span>{p.sub}</span>
-                    <span className="rounded-full bg-primary/10 px-2 py-0.5 text-primary text-[10px] font-bold">DISCOVER</span>
-                  </div>
+                  <div className="mb-2 text-2xl">{p.icon}</div>
+                  <h3 className="font-[family-name:var(--font-display)] text-lg font-bold text-fg-strong">
+                    {p.title}
+                  </h3>
+                  <p className="mt-2.5 font-[family-name:var(--font-body)] text-xs leading-relaxed text-fg-dim">
+                    {p.desc}
+                  </p>
                 </div>
-              </Reveal>
+                <div className="mt-6 border-t border-line/60 pt-3 font-[family-name:var(--font-mono)] text-[11px] text-fg-muted flex justify-between items-center">
+                  <span>{p.sub}</span>
+                  <span className="rounded-full bg-primary/10 px-2 py-0.5 text-primary text-[10px] font-bold">DISCOVER</span>
+                </div>
+              </div>
             ))}
-          </div>
+          </SidewaysDeck>
 
           {/* Hacker Doctrine Banner */}
           <div className="mt-12 rounded-3xl border border-line/90 bg-surface/90 p-8 shadow-2xl backdrop-blur-xl flex flex-col justify-between gap-8 lg:flex-row lg:items-center">
@@ -437,33 +431,34 @@ export default function Home() {
             </div>
           </div>
 
-          {/* 12 Spaces Grid with Curvier Rounded-2xl Cards */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {SPACES.map((s, i) => (
-              <Reveal key={s.title} delay={i * 45}>
-                <div className="group flex h-full flex-col justify-between rounded-2xl border border-line/80 bg-surface/90 p-5 shadow-sm transition-all duration-300 hover:border-primary/60 hover:bg-surface-2 hover:-translate-y-1.5 hover:shadow-[0_12px_32px_rgba(18,184,90,0.12)]">
-                  <div>
-                    <div className="mb-3 flex items-center justify-between text-fg-dim">
-                      <span className="font-[family-name:var(--font-mono)] text-[11px] font-semibold text-primary">
-                        {s.node}
-                      </span>
-                      <span className="text-lg opacity-80 group-hover:scale-125 transition-transform">{s.icon}</span>
-                    </div>
-                    <h4 className="font-[family-name:var(--font-display)] text-base font-bold text-fg-strong">
-                      {s.title}
-                    </h4>
-                    <p className="mt-2 font-[family-name:var(--font-body)] text-xs leading-relaxed text-fg-dim">
-                      {s.desc}
-                    </p>
+          {/* 12 Spaces moving animatedly sideways + interactive touch/drag */}
+          <SidewaysDeck speed={0.7} gap="gap-4">
+            {SPACES.map((s) => (
+              <div
+                key={s.title}
+                className="group flex h-[270px] w-[270px] sm:w-[310px] flex-col justify-between rounded-2xl border border-line/80 bg-surface/90 p-5 shadow-sm transition-all duration-300 hover:border-primary/60 hover:bg-surface-2 hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(18,184,90,0.12)] active:scale-[0.98]"
+              >
+                <div>
+                  <div className="mb-3 flex items-center justify-between text-fg-dim">
+                    <span className="font-[family-name:var(--font-mono)] text-[11px] font-semibold text-primary">
+                      {s.node}
+                    </span>
+                    <span className="text-lg opacity-80 group-hover:scale-125 transition-transform">{s.icon}</span>
                   </div>
-                  <div className="mt-4 border-t border-line/60 pt-3 font-[family-name:var(--font-mono)] text-[10px] text-fg-muted flex justify-between items-center">
-                    <span>{s.tag}</span>
-                    <span className="rounded-full bg-secondary/10 px-2 py-0.5 font-bold text-secondary text-[10px]">{s.badge}</span>
-                  </div>
+                  <h4 className="font-[family-name:var(--font-display)] text-base font-bold text-fg-strong">
+                    {s.title}
+                  </h4>
+                  <p className="mt-2 font-[family-name:var(--font-body)] text-xs leading-relaxed text-fg-dim">
+                    {s.desc}
+                  </p>
                 </div>
-              </Reveal>
+                <div className="mt-4 border-t border-line/60 pt-3 font-[family-name:var(--font-mono)] text-[10px] text-fg-muted flex justify-between items-center">
+                  <span>{s.tag}</span>
+                  <span className="rounded-full bg-secondary/10 px-2 py-0.5 font-bold text-secondary text-[10px]">{s.badge}</span>
+                </div>
+              </div>
             ))}
-          </div>
+          </SidewaysDeck>
         </div>
       </section>
 
