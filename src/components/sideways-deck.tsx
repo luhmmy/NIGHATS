@@ -4,7 +4,7 @@ import React, { useRef, useEffect, useState, useCallback } from "react";
 
 interface SidewaysDeckProps {
   children: React.ReactNode[];
-  speed?: number; // pixels per frame, e.g. 0.6
+  speed?: number; // pixels per frame, e.g. 1.0
   gap?: string; // tailwind gap, default "gap-4"
   className?: string;
   reverse?: boolean;
@@ -12,12 +12,13 @@ interface SidewaysDeckProps {
 
 export function SidewaysDeck({
   children,
-  speed = 0.65,
+  speed = 1.0,
   gap = "gap-4",
   className = "",
   reverse = false,
 }: SidewaysDeckProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const scrollPosRef = useRef(0);
   const isInteractingRef = useRef(false);
   const isDraggingRef = useRef(false);
   const startXRef = useRef(0);
@@ -25,8 +26,8 @@ export function SidewaysDeck({
   const resumeTimerRef = useRef<NodeJS.Timeout | null>(null);
   const [canScroll, setCanScroll] = useState(false);
 
-  // Repeat count: ensure enough width to create seamless wrap on any screen
-  const repeatCount = children.length < 8 ? 3 : 2;
+  // Repeat count: ensure plenty of content so it wraps seamlessly without jumps
+  const repeatCount = children.length < 8 ? 4 : 2;
 
   // Flatten repeated children
   const repeatedItems: React.ReactNode[] = [];
@@ -49,37 +50,39 @@ export function SidewaysDeck({
       const halfWidth = el.scrollWidth / repeatCount;
       if (halfWidth > 0) {
         el.scrollLeft = halfWidth;
+        scrollPosRef.current = halfWidth;
         setCanScroll(true);
       }
     };
 
-    // Small delay to ensure children layout is computed
-    const timer = setTimeout(setupInitialPosition, 50);
+    const timer = setTimeout(setupInitialPosition, 60);
     return () => clearTimeout(timer);
   }, [repeatCount]);
 
-  // Infinite Auto-drift Animation Loop
+  // Robust Infinite Auto-scroll Loop using floating-point accumulator
   useEffect(() => {
     let animId: number;
+    let lastTime = performance.now();
 
-    const loop = () => {
+    const loop = (currentTime: number) => {
       const el = containerRef.current;
+      const deltaTime = Math.min((currentTime - lastTime) / 16.67, 2.0); // normalize ~60fps
+      lastTime = currentTime;
+
       if (el && !isInteractingRef.current) {
         const halfWidth = el.scrollWidth / repeatCount;
+        const step = (reverse ? -speed : speed) * deltaTime;
 
-        // Auto move
-        if (reverse) {
-          el.scrollLeft -= speed;
-        } else {
-          el.scrollLeft += speed;
-        }
+        scrollPosRef.current += step;
 
         // Wrap around seamlessly
-        if (el.scrollLeft >= halfWidth * (repeatCount - 1)) {
-          el.scrollLeft -= halfWidth;
-        } else if (el.scrollLeft <= 0) {
-          el.scrollLeft += halfWidth;
+        if (scrollPosRef.current >= halfWidth * (repeatCount - 1)) {
+          scrollPosRef.current -= halfWidth;
+        } else if (scrollPosRef.current <= 0) {
+          scrollPosRef.current += halfWidth;
         }
+
+        el.scrollLeft = Math.round(scrollPosRef.current);
       }
       animId = requestAnimationFrame(loop);
     };
@@ -88,8 +91,8 @@ export function SidewaysDeck({
     return () => cancelAnimationFrame(animId);
   }, [speed, repeatCount, reverse]);
 
-  // Interaction handlers to pause during user touch / drag
-  const markInteractionStart = useCallback(() => {
+  // Pause & Resume helper
+  const pauseAutoScroll = useCallback(() => {
     isInteractingRef.current = true;
     if (resumeTimerRef.current) {
       clearTimeout(resumeTimerRef.current);
@@ -97,27 +100,50 @@ export function SidewaysDeck({
     }
   }, []);
 
-  const markInteractionEnd = useCallback((delay = 1400) => {
+  const resumeAutoScroll = useCallback((delay = 1200) => {
     if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
     resumeTimerRef.current = setTimeout(() => {
+      const el = containerRef.current;
+      if (el) {
+        scrollPosRef.current = el.scrollLeft;
+      }
       isInteractingRef.current = false;
     }, delay);
   }, []);
 
-  // Touch handlers for mobile
+  // Sync scroll position when user manually scrolls (touch/wheel/trackpad)
+  const handleScroll = () => {
+    const el = containerRef.current;
+    if (!el) return;
+    if (isInteractingRef.current) {
+      scrollPosRef.current = el.scrollLeft;
+
+      // Handle wrap during manual fast scrolling
+      const halfWidth = el.scrollWidth / repeatCount;
+      if (scrollPosRef.current >= halfWidth * (repeatCount - 1)) {
+        scrollPosRef.current -= halfWidth;
+        el.scrollLeft = scrollPosRef.current;
+      } else if (scrollPosRef.current <= 0) {
+        scrollPosRef.current += halfWidth;
+        el.scrollLeft = scrollPosRef.current;
+      }
+    }
+  };
+
+  // Touch handlers for mobile devices
   const handleTouchStart = () => {
-    markInteractionStart();
+    pauseAutoScroll();
   };
 
   const handleTouchEnd = () => {
-    markInteractionEnd(1500);
+    resumeAutoScroll(1400);
   };
 
   // Mouse drag handlers for desktop
   const handleMouseDown = (e: React.MouseEvent) => {
     const el = containerRef.current;
     if (!el) return;
-    markInteractionStart();
+    pauseAutoScroll();
     isDraggingRef.current = true;
     startXRef.current = e.pageX - el.offsetLeft;
     scrollLeftStartRef.current = el.scrollLeft;
@@ -129,48 +155,57 @@ export function SidewaysDeck({
     if (!el) return;
     e.preventDefault();
     const x = e.pageX - el.offsetLeft;
-    const walk = (x - startXRef.current) * 1.4;
+    const walk = (x - startXRef.current) * 1.5;
     el.scrollLeft = scrollLeftStartRef.current - walk;
-
-    // Check wrap during drag
-    const halfWidth = el.scrollWidth / repeatCount;
-    if (el.scrollLeft >= halfWidth * (repeatCount - 1)) {
-      el.scrollLeft -= halfWidth;
-      scrollLeftStartRef.current -= halfWidth;
-    } else if (el.scrollLeft <= 0) {
-      el.scrollLeft += halfWidth;
-      scrollLeftStartRef.current += halfWidth;
-    }
+    scrollPosRef.current = el.scrollLeft;
   };
 
   const handleMouseUp = () => {
-    isDraggingRef.current = false;
-    markInteractionEnd(1500);
+    if (isDraggingRef.current) {
+      isDraggingRef.current = false;
+      resumeAutoScroll(1400);
+    }
+  };
+
+  // Global mouseup listener while dragging
+  useEffect(() => {
+    const handleGlobalMouseUp = () => {
+      if (isDraggingRef.current) {
+        isDraggingRef.current = false;
+        resumeAutoScroll(1400);
+      }
+    };
+    window.addEventListener("mouseup", handleGlobalMouseUp);
+    return () => window.removeEventListener("mouseup", handleGlobalMouseUp);
+  }, [resumeAutoScroll]);
+
+  // Trackpad / wheel scrolling
+  const handleWheel = () => {
+    pauseAutoScroll();
+    resumeAutoScroll(1200);
   };
 
   // Manual nudge buttons (left/right)
   const scrollStep = (direction: "left" | "right") => {
     const el = containerRef.current;
     if (!el) return;
-    markInteractionStart();
+    pauseAutoScroll();
     const distance = 320;
     el.scrollBy({
       left: direction === "right" ? distance : -distance,
       behavior: "smooth",
     });
-    markInteractionEnd(2000);
+    resumeAutoScroll(1800);
   };
 
   return (
     <div className={`relative w-full ${className}`}>
-      {/* Edge gradient fades */}
-      <div className="pointer-events-none absolute left-0 top-0 bottom-0 z-10 w-10 sm:w-24 bg-gradient-to-r from-void via-void/80 to-transparent" />
-      <div className="pointer-events-none absolute right-0 top-0 bottom-0 z-10 w-10 sm:w-24 bg-gradient-to-l from-void via-void/80 to-transparent" />
+      {/* NO shadows on edges as explicitly requested by user */}
 
-      {/* Manual Step Controls & Swipe hint */}
-      <div className="mb-3 flex items-center justify-between px-4 sm:px-2">
+      {/* Manual Step Controls & Telemetry hint */}
+      <div className="mb-3.5 flex items-center justify-between px-2 sm:px-4">
         <div className="flex items-center gap-2 font-[family-name:var(--font-mono)] text-[11px] text-fg-dim">
-          <span className="inline-block animate-pulse text-primary">↔</span>
+          <span className="inline-block animate-pulse text-primary font-bold">↔</span>
           <span className="tracking-wider uppercase">Auto-gliding • Swipe or drag sideways</span>
         </div>
         <div className="flex items-center gap-1.5">
@@ -193,17 +228,17 @@ export function SidewaysDeck({
         </div>
       </div>
 
-      {/* Horizontally moving container */}
+      {/* Horizontally moving container - clean edge to edge with NO gradient overlays */}
       <div
         ref={containerRef}
+        onScroll={handleScroll}
+        onWheel={handleWheel}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
-        onMouseEnter={markInteractionStart}
-        className={`flex ${gap} overflow-x-auto no-scrollbar py-2 px-4 cursor-grab active:cursor-grabbing select-none transition-opacity duration-300 ${
+        className={`flex ${gap} overflow-x-auto no-scrollbar py-2 px-1 sm:px-2 cursor-grab active:cursor-grabbing select-none transition-opacity duration-300 ${
           canScroll ? "opacity-100" : "opacity-0"
         }`}
         style={{
