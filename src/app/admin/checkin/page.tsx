@@ -7,6 +7,16 @@ import { checkInAttendee, undoCheckIn } from "./actions";
 import Link from "next/link";
 import { getAdminPath } from "@/lib/admin-route";
 
+const TRACK_MAP: Record<
+  string,
+  { label: string; code: string; tone: "primary" | "secondary" | "warn" | "neutral" }
+> = {
+  individual: { label: "Observer", code: "[TRACK 01]", tone: "neutral" },
+  solo_hackalong: { label: "Solo Hacker", code: "[TRACK 02]", tone: "primary" },
+  team: { label: "Squad / Team", code: "[TRACK 03]", tone: "secondary" },
+  team_bonding: { label: "Matchmaking", code: "[TRACK 04]", tone: "warn" },
+};
+
 export default async function CheckInDeskPage({
   searchParams,
 }: {
@@ -29,6 +39,7 @@ export default async function CheckInDeskPage({
                 { email: { contains: query, mode: "insensitive" } },
                 { handle: { contains: query, mode: "insensitive" } },
                 { badgeNumber: { contains: query, mode: "insensitive" } },
+                { notes: { contains: query, mode: "insensitive" } },
               ],
             }
           : {},
@@ -154,19 +165,69 @@ export default async function CheckInDeskPage({
                 </td>
               </tr>
             ) : (
-              regs.map((r) => (
-                <tr key={r.id} className={r.checkedIn ? "bg-surface-2/20" : ""}>
-                  <Td className="text-fg-strong">
-                    <div className="font-semibold text-fg-strong">{r.fullName || "—"}</div>
-                    {r.handle && (
-                      <div className="font-[family-name:var(--font-mono)] text-xs text-primary">
-                        @{r.handle}
+              regs.map((r) => {
+                let meta: {
+                  track?: string;
+                  teamName?: string;
+                  teamSize?: string;
+                  skills?: string[];
+                  queueId?: string;
+                } = {};
+                try {
+                  if (r.notes?.startsWith("{")) {
+                    meta = JSON.parse(r.notes);
+                  }
+                } catch {
+                  // ignore
+                }
+
+                const resolvedTrack = meta.track || r.roles[0] || "individual";
+                const trackInfo = TRACK_MAP[resolvedTrack] || {
+                  label: resolvedTrack,
+                  code: "[TRACK]",
+                  tone: "neutral" as const,
+                };
+
+                return (
+                  <tr key={r.id} className={r.checkedIn ? "bg-surface-2/20" : ""}>
+                    <Td className="text-fg-strong">
+                      <div className="flex items-center gap-2">
+                        <span className="font-semibold text-fg-strong">{r.fullName || "—"}</span>
+                        {meta.queueId && (
+                          <span className="font-[family-name:var(--font-mono)] text-[10px] text-primary/80">
+                            #{meta.queueId}
+                          </span>
+                        )}
                       </div>
-                    )}
-                  </Td>
-                  <Td className="font-[family-name:var(--font-mono)] text-xs text-fg-dim">
-                    {r.email}
-                  </Td>
+                      <div className="flex flex-wrap items-center gap-1.5 mt-1">
+                        {r.handle && (
+                          <span className="font-[family-name:var(--font-mono)] text-xs text-primary">
+                            @{r.handle}
+                          </span>
+                        )}
+                        <span
+                          className={`rounded-full border px-2 py-0.2 font-[family-name:var(--font-mono)] text-[9px] font-bold uppercase tracking-wider ${
+                            trackInfo.tone === "warn"
+                              ? "border-amber-700/50 bg-amber-500/10 text-amber-400"
+                              : trackInfo.tone === "secondary"
+                              ? "border-secondary/40 bg-secondary/10 text-secondary"
+                              : trackInfo.tone === "primary"
+                              ? "border-primary/40 bg-primary/10 text-primary"
+                              : "border-line bg-surface text-fg-muted"
+                          }`}
+                        >
+                          {trackInfo.label}
+                        </span>
+                        {meta.teamName && (
+                          <span className="font-[family-name:var(--font-mono)] text-[10px] text-secondary">
+                            Squad: {meta.teamName}
+                          </span>
+                        )}
+                      </div>
+                    </Td>
+                    <Td className="font-[family-name:var(--font-mono)] text-xs text-fg-dim">
+                      {r.email}
+                    </Td>
                   <Td>
                     <StatusPill
                       label={r.status}
@@ -222,7 +283,8 @@ export default async function CheckInDeskPage({
                     )}
                   </Td>
                 </tr>
-              ))
+                );
+              })
             )}
           </tbody>
         </Table>
