@@ -17,7 +17,7 @@ export default function RegisterPage() {
           &lt; back to portal
         </Link>
         <div className="mt-4 rounded-lg border border-line bg-surface p-6">
-          <div className="mono-caps text-primary">// EARLY ACCESS</div>
+          <div className="mono-caps text-primary">{"// EARLY ACCESS"}</div>
           <h1 className="mt-1 font-[family-name:var(--font-display)] text-2xl font-bold text-fg-strong">
             Request an invite
           </h1>

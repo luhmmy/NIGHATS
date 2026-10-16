@@ -213,10 +213,11 @@ export default function Home() {
             {/* Curvier Pill CTAs (Update Line) */}
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <a
-                href="#early-dispatch"
+                href="#register"
                 className="flex items-center gap-2 rounded-full bg-primary px-8 py-4 font-[family-name:var(--font-mono)] text-xs font-bold uppercase tracking-wider text-on-primary transition-all duration-200 hover:bg-primary-bright hover:shadow-[0_0_24px_rgba(18,184,90,0.45)] hover:-translate-y-0.5 active:scale-95 shadow-[0_0_14px_rgba(18,184,90,0.25)]"
               >
-                <span>Get Updates</span>
+                <span>Register for Waitlist</span>
+                <span className="font-sans text-sm">→</span>
               </a>
               <a
                 href="#matrix"
@@ -266,56 +267,84 @@ export default function Home() {
       {/* CONTINUOUS MARQUEE MOTION TICKER */}
       <Ticker />
 
-      {/* SECTION 2: EARLY ACCESS DISPATCH */}
-      <section id="early-dispatch" className="w-full border-b border-line bg-surface/40 py-20 px-4 lg:px-8">
+      {/* SECTION 2: OFFICIAL WAITLIST & TRACK REGISTRATION */}
+      <section id="register" className="w-full border-b border-line bg-surface/40 py-20 px-4 lg:px-8 scroll-mt-16">
+        <div id="early-dispatch" />
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-12">
             {/* Left: Dispatch Briefing */}
             <div className="flex flex-col gap-6 lg:col-span-5">
-              <span className="mono-caps text-primary">EARLY ACCESS REGISTRATION</span>
+              <span className="mono-caps text-primary">OFFICIAL WAITLIST &amp; REGISTRATION</span>
               <h2 className="font-[family-name:var(--font-display)] text-3xl font-bold uppercase tracking-tight text-fg-strong md:text-4xl">
-                Stay Ahead of Announcements &amp; Tickets.
+                Choose Your Track &amp; Join the Waitlist.
               </h2>
               <p className="font-[family-name:var(--font-body)] text-sm leading-relaxed text-fg-dim">
-                NIGHATS 1.0 ticketing, CTF registrations, and workshop slots will open in phases. Register your interest early to receive updates directly before public announcements.
+                NIGHATS 1.0 features 4 specialized attendance tracks. Register your operational vector today to be first in line when ticket waves, hardware badge allocations, and CTF access are dispatched.
               </p>
 
-              <div className="space-y-4 rounded-3xl border border-line/80 bg-surface-2/80 p-6 shadow-xl backdrop-blur-md">
+              <div className="space-y-3.5 rounded-3xl border border-line/80 bg-surface-2/80 p-6 shadow-xl backdrop-blur-md">
                 <div className="flex items-start gap-3">
-                  <span className="mt-0.5 text-primary font-[family-name:var(--font-mono)] text-base font-bold">[✓]</span>
+                  <span className="text-xl shrink-0">🎧</span>
                   <div>
                     <h4 className="font-[family-name:var(--font-display)] text-sm font-semibold text-fg-strong">
-                      Priority Notification
+                      Individual Observer (Limited)
                     </h4>
                     <p className="mt-0.5 font-[family-name:var(--font-body)] text-xs text-fg-dim">
-                      Subscribers receive direct email notification before early-bird tickets and hardware badges go live.
+                      Come and listen. Strictly capped slots for keynotes, disclosures, and panels. No laptop required.
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3">
-                  <span className="mt-0.5 text-secondary font-[family-name:var(--font-mono)] text-base font-bold">[✓]</span>
+                <div className="flex items-start gap-3 border-t border-line/60 pt-3">
+                  <span className="text-xl shrink-0">⚡</span>
                   <div>
                     <h4 className="font-[family-name:var(--font-display)] text-sm font-semibold text-fg-strong">
-                      Planning Transparency
+                      Solo Hackalong (Hands-On)
                     </h4>
                     <p className="mt-0.5 font-[family-name:var(--font-body)] text-xs text-fg-dim">
-                      Dates, venue, and ticketing will be announced when officially approved by the organizing committee.
+                      Bring your own laptop. Direct bench access to physical lockpicking, hardware labs, and solo CTF bounties.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3 border-t border-line/60 pt-3">
+                  <span className="text-xl shrink-0">🛡️</span>
+                  <div>
+                    <h4 className="font-[family-name:var(--font-display)] text-sm font-semibold text-fg-strong">
+                      Team Registration (Squad)
+                    </h4>
+                    <p className="mt-0.5 font-[family-name:var(--font-body)] text-xs text-fg-dim">
+                      Register a pre-formed crew of 2 to 5 operators for the 36H CTF and live attack-defense network warfare.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3 border-t border-line/60 pt-3">
+                  <span className="text-xl shrink-0">🤝</span>
+                  <div>
+                    <h4 className="font-[family-name:var(--font-display)] text-sm font-semibold text-fg-strong">
+                      Team Matchmaking (Looking for Squad)
+                    </h4>
+                    <p className="mt-0.5 font-[family-name:var(--font-body)] text-xs text-fg-dim">
+                      Coming solo? We match your skills with complementary hackers during the Day 1 Squad Formation Mixer.
                     </p>
                   </div>
                 </div>
               </div>
 
               <div className="rounded-2xl border border-line bg-void/80 p-4 font-[family-name:var(--font-mono)] text-xs text-fg-dim">
-                <span className="font-semibold text-primary">NOTE:</span> Planning phase active. Submissions save to our database and do not guarantee entry, speaker selection, or sponsorship.
+                <span className="font-semibold text-primary">WAITLIST GUARANTEE:</span> Registering locks your sequence position. You will be the first notified via secure email when ticket drops and badge reservations go live before public announcement.
               </div>
             </div>
 
             {/* Right: Curvier Multi-Role Interest Form */}
             <div className="rounded-3xl border border-line/90 bg-surface/90 p-6 sm:p-8 shadow-2xl backdrop-blur-xl lg:col-span-7">
               <div className="mb-6 flex items-center justify-between border-b border-line pb-4 font-[family-name:var(--font-mono)] text-xs text-fg-muted">
-                <span className="font-semibold text-fg-strong text-sm">Operator Interest Form</span>
-                <span className="text-primary font-medium">Accepting Submissions</span>
+                <span className="font-semibold text-fg-strong text-sm">Official Waitlist Registration</span>
+                <span className="text-primary font-medium flex items-center gap-1.5">
+                  <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
+                  Accepting Waitlist Registrations
+                </span>
               </div>
 
               <EarlyAccessForm />
@@ -558,7 +587,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SECTION: FINAL COMING SOON CTA BANNER */}
+      {/* SECTION: FINAL REGISTRATION & WAITLIST BANNER */}
       <section className="relative w-full overflow-hidden border-b border-line bg-surface/40 py-20 px-4 lg:px-8">
         <div className="pointer-events-none absolute inset-0 opacity-20">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[500px] rounded-full bg-primary/20 blur-[140px]" />
@@ -569,20 +598,20 @@ export default function Home() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
             </span>
-            FESTIVAL COMING SOON • LAGOS 2027
+            OFFICIAL WAITLIST OPEN • LAGOS 2027
           </div>
           <h2 className="font-[family-name:var(--font-display)] text-3xl sm:text-5xl font-extrabold uppercase tracking-tight text-fg-strong">
-            BE FIRST TO RECEIVE <span className="text-primary">DISPATCHES</span>
+            SECURE YOUR SPOT ON THE <span className="text-primary">WAITLIST</span>
           </h2>
           <p className="mt-4 max-w-xl mx-auto font-[family-name:var(--font-body)] text-sm sm:text-base text-fg-dim leading-relaxed">
-            Tickets, hardware badge reservations, speaker line-ups, and CTF challenge releases will be published in waves to early subscribers.
+            Individual observers, solo hackalong operators, and teams: join the official waitlist today. Subscribers will be the first to receive invitation keys, venue access, and badge reservation coordinates.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <a
-              href="#early-dispatch"
+              href="#register"
               className="group flex items-center gap-2.5 rounded-full bg-primary px-8 py-4 font-[family-name:var(--font-mono)] text-xs font-bold uppercase tracking-wider text-on-primary transition-all duration-200 hover:bg-primary-bright hover:shadow-[0_0_24px_rgba(18,184,90,0.5)] hover:-translate-y-0.5 active:scale-95"
             >
-              <span>Join Early Access Dispatch</span>
+              <span>Register for Waitlist</span>
               <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
             </a>
             <Link

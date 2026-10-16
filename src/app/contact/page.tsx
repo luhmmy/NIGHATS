@@ -17,7 +17,7 @@ export default function ContactPage() {
 
       <main className="mx-auto w-full max-w-4xl px-4 py-16 md:px-12 flex-1">
         <div className="mb-8">
-          <div className="mono-caps text-primary">// SECURE TRANSMISSION CHANNEL</div>
+          <div className="mono-caps text-primary">{"// SECURE TRANSMISSION CHANNEL"}</div>
           <h1 className="mt-1 font-[family-name:var(--font-display)] text-3xl font-bold text-fg-strong md:text-5xl uppercase tracking-tight">
             Contact &amp; <span className="text-primary">Support</span>
           </h1>

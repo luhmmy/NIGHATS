@@ -3,6 +3,10 @@ import { NextResponse } from "next/server";
 import { authConfig } from "@/auth.config";
 import { ADMIN_SECRET_PATH } from "@/lib/admin-route";
 
+// Next.js 16 renamed the `middleware` convention to `proxy`. It runs on the
+// Node.js runtime (the edge runtime is not available here) — fine for this
+// file, which only uses Web Crypto (`crypto.getRandomValues`/`btoa`), the
+// edge-safe Auth.js config (no Prisma), and NextResponse, all available on Node.
 const { auth } = NextAuth(authConfig);
 
 const isDev = process.env.NODE_ENV !== "production";
@@ -48,8 +52,8 @@ function withSecurityHeaders(src: Headers, nonce: string, csp: string): Headers 
   return h;
 }
 
-export default auth((req) => {
-  // Fresh nonce per request (Web Crypto is available on the edge runtime).
+const proxy = auth((req) => {
+  // Fresh nonce per request (Web Crypto is available on the Node.js runtime).
   const bytes = new Uint8Array(16);
   crypto.getRandomValues(bytes);
   const nonce = btoa(String.fromCharCode(...bytes));
@@ -125,6 +129,8 @@ export default auth((req) => {
   res.headers.set("Content-Security-Policy", csp);
   return res;
 });
+
+export default proxy;
 
 export const config = {
   // Run on everything except static assets & image optimizer.

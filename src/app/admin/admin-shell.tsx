@@ -28,10 +28,11 @@ export function AdminShell({
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
-  // Close the mobile drawer whenever the route changes.
-  useEffect(() => {
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
     setOpen(false);
-  }, [pathname]);
+  }
 
   const isActive = (href: string) =>
     href === getAdminPath("") ? pathname === getAdminPath("") : pathname.startsWith(href);

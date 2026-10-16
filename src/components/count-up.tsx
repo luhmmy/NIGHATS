@@ -29,7 +29,7 @@ export function CountUp({
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) {
-      setDisplay(value);
+      requestAnimationFrame(() => setDisplay(value));
       return;
     }
 
