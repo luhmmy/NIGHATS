@@ -15,7 +15,6 @@ const PILLARS = [
     title: "Ethical Hacking & Defensive Ops",
     desc: "Bridging offensive penetration testing with battle-tested SOC resilience. Real scenarios covering cloud infrastructure, bypass mechanisms, and threat hunting.",
     sub: "RED & BLUE DISCIPLINE",
-    icon: "🛡️",
   },
   {
     num: "02",
@@ -23,7 +22,6 @@ const PILLARS = [
     title: "Threat Research & Zero-Days",
     desc: "Dissecting memory corruption, zero-day CVE disclosures, novel kernel payloads, and telemetry affecting enterprise and sovereign infrastructures.",
     sub: "TECHNICAL WHITE PAPERS",
-    icon: "🔬",
   },
   {
     num: "03",
@@ -31,7 +29,6 @@ const PILLARS = [
     title: "Interactive Hacking Villages",
     desc: "Self-contained specialized micro-labs: pick physical locks, capture automotive CAN bus traffic, analyze rogue RF frequencies, and reverse solder circuit chips.",
     sub: "NO PASSIVE SPECTATORS",
-    icon: "⚡",
   },
   {
     num: "04",
@@ -39,7 +36,6 @@ const PILLARS = [
     title: "CTF & Electronic Badges",
     desc: "Every attendee receives an interactive microcontroller electronic badge equipped with hidden transceivers, cipher puzzles, and hardware attack surfaces.",
     sub: "CUSTOM HARDWARE & 36H CTF",
-    icon: "📟",
   },
 ];
 
@@ -50,7 +46,6 @@ const SPACES = [
     desc: "Jeopardy and attack-defense stages spanning pwn, crypto, reverse engineering, web, and forensics with bounties.",
     tag: "36-HOUR RUN",
     badge: "TEAMS / SOLO",
-    icon: "🚩",
   },
   {
     node: "LAB 02",
@@ -58,7 +53,6 @@ const SPACES = [
     desc: "Advanced perimeter compromise, Command & Control tradecraft, privilege escalation, and active defensive evasion.",
     tag: "ADVERSARIAL SIMULATION",
     badge: "LIVE RANGE",
-    icon: "⚔️",
   },
   {
     node: "LAB 03",
@@ -66,7 +60,6 @@ const SPACES = [
     desc: "UART/JTAG pin dumping, SPI flash extraction, firmware reverse engineering, logic analyzer setups, and soldering benches.",
     tag: "BENCH EQUIPMENT INCLUDED",
     badge: "PHYSICAL LAB",
-    icon: "🔌",
   },
   {
     node: "LAB 04",
@@ -74,7 +67,6 @@ const SPACES = [
     desc: "Deep IDA Pro and Ghidra disassembly labs. Deobfuscation of real-world trojans, ransomware, and bootkit mechanics.",
     tag: "STATIC & DYNAMIC",
     badge: "GHIDRA / IDA",
-    icon: "🧩",
   },
   {
     node: "LAB 05",
@@ -82,7 +74,6 @@ const SPACES = [
     desc: "APK and IPA decompilation, dynamic instrumentation via Frida and Objection, runtime hooking, and keystore security research.",
     tag: "ANDROID & IOS",
     badge: "DYNAMIC HOOKING",
-    icon: "📱",
   },
   {
     node: "LAB 06",
@@ -90,7 +81,6 @@ const SPACES = [
     desc: "Open Source Intelligence challenges: geolocating satellite imagery, digital footprinting, and forensic investigations.",
     tag: "INTELLIGENCE",
     badge: "INVESTIGATIVE",
-    icon: "🛰️",
   },
   {
     node: "LAB 07",
@@ -98,7 +88,6 @@ const SPACES = [
     desc: "Software Defined Radio tracking, Wi-Fi auditing, Bluetooth Low Energy beacon analysis, and satellite telemetry decoding.",
     tag: "RADIO FREQUENCY",
     badge: "HACKRF / BLADERF",
-    icon: "📡",
   },
   {
     node: "LAB 08",
@@ -106,7 +95,6 @@ const SPACES = [
     desc: "Prompt injection mechanics, indirect context poisoning, RAG vector database extraction, and autonomous agent security.",
     tag: "MODERN ATTACK VECTORS",
     badge: "MODEL AUDITING",
-    icon: "🧠",
   },
   {
     node: "LAB 09",
@@ -114,7 +102,6 @@ const SPACES = [
     desc: "Internal pivoting, packet manipulation, enterprise routing, BGP and VLAN analysis, lateral movement, protocol fuzzing.",
     tag: "ENTERPRISE NETWORKING",
     badge: "ROUTING & PIVOT",
-    icon: "🌐",
   },
   {
     node: "LAB 10",
@@ -122,7 +109,6 @@ const SPACES = [
     desc: "Elliptic curve vulnerabilities, post-quantum candidates, side-channel power analysis on silicon chips, and cryptographic proofs.",
     tag: "MATHEMATICAL RIGOR",
     badge: "ECC / RSA / PQC",
-    icon: "🔐",
   },
   {
     node: "LAB 11",
@@ -130,7 +116,6 @@ const SPACES = [
     desc: "Lockpicking benches, tubular lock manipulation, RFID access card cloning (Proxmark3), and bypass tools for physical enclosures.",
     tag: "HANDS ON HARDWARE",
     badge: "PICKS & PROXMARK",
-    icon: "🔓",
   },
   {
     node: "LAB 12",
@@ -138,7 +123,6 @@ const SPACES = [
     desc: "Live chiptune sets, bytebeat synthesizer coding, retro console tournaments, community lightning talks, and networking fellowship.",
     tag: "CULTURE & COMMUNITY",
     badge: "ALL ATTENDEES",
-    icon: "🎛️",
   },
 ];
 
@@ -300,7 +284,7 @@ export default function Home() {
             <div className="group rounded-3xl border border-line/80 bg-surface/90 p-6 flex flex-col justify-between transition-all duration-300 hover:border-fg-strong/40 hover:-translate-y-1 hover:shadow-xl">
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-3xl">🎧</span>
+                  <span className="font-[family-name:var(--font-mono)] text-xs text-fg-dim font-bold tracking-wider">[TRACK 01]</span>
                   <span className="rounded-full bg-void px-2.5 py-1 font-[family-name:var(--font-mono)] text-[10px] font-bold uppercase tracking-wider text-fg-muted border border-line">
                     LIMITED SEATS
                   </span>
@@ -317,7 +301,7 @@ export default function Home() {
               </div>
               <div className="mt-6 pt-4 border-t border-line/60">
                 <span className="font-[family-name:var(--font-mono)] text-[11px] text-fg-muted block mb-3">
-                  ✓ Talk Access • ✓ Community Pass
+                  Talk Access • Community Pass
                 </span>
                 <Link
                   href="/register"
@@ -332,7 +316,7 @@ export default function Home() {
             <div className="group rounded-3xl border border-primary/50 bg-surface/90 p-6 flex flex-col justify-between transition-all duration-300 hover:border-primary hover:-translate-y-1 hover:shadow-[0_0_24px_rgba(18,184,90,0.15)]">
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-3xl">⚡</span>
+                  <span className="font-[family-name:var(--font-mono)] text-xs text-primary font-bold tracking-wider">[TRACK 02]</span>
                   <span className="rounded-full bg-primary/10 px-2.5 py-1 font-[family-name:var(--font-mono)] text-[10px] font-bold uppercase tracking-wider text-primary border border-primary/30">
                     POPULAR • HANDS-ON
                   </span>
@@ -349,7 +333,7 @@ export default function Home() {
               </div>
               <div className="mt-6 pt-4 border-t border-line/60">
                 <span className="font-[family-name:var(--font-mono)] text-[11px] text-primary block mb-3">
-                  ✓ Bench Power • ✓ Lab Tools • ✓ Badge
+                  Bench Power • Lab Tools • Badge
                 </span>
                 <Link
                   href="/register"
@@ -364,7 +348,7 @@ export default function Home() {
             <div className="group rounded-3xl border border-secondary/50 bg-surface/90 p-6 flex flex-col justify-between transition-all duration-300 hover:border-secondary hover:-translate-y-1 hover:shadow-xl">
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-3xl">🛡️</span>
+                  <span className="font-[family-name:var(--font-mono)] text-xs text-secondary font-bold tracking-wider">[TRACK 03]</span>
                   <span className="rounded-full bg-secondary/10 px-2.5 py-1 font-[family-name:var(--font-mono)] text-[10px] font-bold uppercase tracking-wider text-secondary border border-secondary/30">
                     2–5 MEMBERS
                   </span>
@@ -381,7 +365,7 @@ export default function Home() {
               </div>
               <div className="mt-6 pt-4 border-t border-line/60">
                 <span className="font-[family-name:var(--font-mono)] text-[11px] text-secondary block mb-3">
-                  ✓ Squad Table • ✓ CTF Slot • ✓ Scoreboard
+                  Squad Table • CTF Slot • Scoreboard
                 </span>
                 <Link
                   href="/register"
@@ -396,7 +380,7 @@ export default function Home() {
             <div className="group rounded-3xl border border-line/80 bg-surface/90 p-6 flex flex-col justify-between transition-all duration-300 hover:border-primary-bright/60 hover:-translate-y-1 hover:shadow-xl">
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-3xl">🤝</span>
+                  <span className="font-[family-name:var(--font-mono)] text-xs text-primary-bright font-bold tracking-wider">[TRACK 04]</span>
                   <span className="rounded-full bg-void px-2.5 py-1 font-[family-name:var(--font-mono)] text-[10px] font-bold uppercase tracking-wider text-primary-bright border border-line">
                     FREE AGENTS
                   </span>
@@ -413,7 +397,7 @@ export default function Home() {
               </div>
               <div className="mt-6 pt-4 border-t border-line/60">
                 <span className="font-[family-name:var(--font-mono)] text-[11px] text-fg-muted block mb-3">
-                  ✓ Skill Profile • ✓ Mixer Invite
+                  Skill Profile • Mixer Invite
                 </span>
                 <Link
                   href="/register"
@@ -427,12 +411,9 @@ export default function Home() {
 
           {/* Waitlist Guarantee Ribbon */}
           <div className="mt-8 rounded-2xl border border-line-bright/60 bg-void/90 p-5 flex flex-col sm:flex-row items-center justify-between gap-4 font-[family-name:var(--font-mono)] text-xs">
-            <div className="flex items-center gap-3">
-              <span className="text-xl">⚡</span>
-              <div>
-                <span className="font-bold text-primary">OFFICIAL WAITLIST GUARANTEE:</span>
-                <span className="text-fg-dim ml-1.5">Registering on any track locks your sequence position. You will be the first to receive invitation dispatches, venue coordinates, and hardware badge reservations before public release.</span>
-              </div>
+            <div>
+              <span className="font-bold text-primary">OFFICIAL WAITLIST GUARANTEE:</span>
+              <span className="text-fg-dim ml-1.5">Registering on any track locks your sequence position. You will be the first to receive invitation dispatches, venue coordinates, and hardware badge reservations before public release.</span>
             </div>
             <Link
               href="/register"
@@ -475,7 +456,6 @@ export default function Home() {
                       {p.tag}
                     </span>
                   </div>
-                  <div className="mb-2 text-2xl">{p.icon}</div>
                   <h3 className="font-[family-name:var(--font-display)] text-lg font-bold text-fg-strong">
                     {p.title}
                   </h3>
@@ -563,7 +543,7 @@ export default function Home() {
                     <span className="font-[family-name:var(--font-mono)] text-[11px] font-semibold text-primary">
                       {s.node}
                     </span>
-                    <span className="text-lg opacity-80 group-hover:scale-125 transition-transform">{s.icon}</span>
+                    <span className="font-[family-name:var(--font-mono)] text-[10px] text-fg-muted uppercase tracking-wider">{s.badge}</span>
                   </div>
                   <h4 className="font-[family-name:var(--font-display)] text-base font-bold text-fg-strong">
                     {s.title}

@@ -10,7 +10,7 @@ interface TrackInfo {
   subtitle: string;
   badge: string;
   badgeTone: "warn" | "primary" | "secondary";
-  icon: string;
+  code: string;
   tagline: string;
   description: string;
   requirements: string[];
@@ -25,7 +25,7 @@ export const TRACKS: TrackInfo[] = [
     subtitle: "Listen & Learn",
     badge: "STRICTLY LIMITED CAPACITY",
     badgeTone: "warn",
-    icon: "🎧",
+    code: "01",
     tagline: "Keynote talks, panel discussions, and village showcases as an audience observer.",
     description: "Ideal for students, researchers, journalists, and enthusiasts who want to attend keynote speeches, fireside research chats, and watch live village hacking without hands-on lab participation.",
     requirements: [
@@ -51,7 +51,7 @@ export const TRACKS: TrackInfo[] = [
     subtitle: "Hands-On Operator",
     badge: "BENCH ACCESS • BYOD",
     badgeTone: "primary",
-    icon: "⚡",
+    code: "02",
     tagline: "Hands-on bench participation, hardware hacking, lockpicking, and the solo CTF track.",
     description: "Designed for independent security researchers, ethical hackers, and operators who want to bring their own machine and actively participate in physical benches, reverse engineering labs, and CTF challenges.",
     requirements: [
@@ -79,7 +79,7 @@ export const TRACKS: TrackInfo[] = [
     subtitle: "Pre-Formed Squad",
     badge: "2–5 OPERATORS • ATTACK & DEFENSE",
     badgeTone: "secondary",
-    icon: "🛡️",
+    code: "03",
     tagline: "Register your organized squad to compete in the 36H CTF and live network warfare.",
     description: "Built for established security teams, collegiate squads, corporate red/blue teams, and hacker collectives (2 to 5 members) competing for team scoreboard bounties and live attack-defense warfare.",
     requirements: [
@@ -106,7 +106,7 @@ export const TRACKS: TrackInfo[] = [
     subtitle: "Looking for a Squad",
     badge: "FREE AGENT POOL • SQUAD MIXER",
     badgeTone: "primary",
-    icon: "🤝",
+    code: "04",
     tagline: "Coming solo but want to compete in a squad? We match you with teammates on Day 1.",
     description: "Perfect for solo hackers, out-of-town travelers, and passionate builders looking to join forces. Register your core skillset and join our Day 1 Morning Matchmaking Mixer to form a competitive squad!",
     requirements: [
@@ -128,21 +128,21 @@ export const TRACKS: TrackInfo[] = [
 ];
 
 const SKILL_OPTIONS = [
-  { id: "web", label: "Web & API Exploitation", icon: "🌐" },
-  { id: "pwn", label: "Binary Exploitation & Pwn", icon: "🔬" },
-  { id: "crypto", label: "Cryptography & Math", icon: "🔐" },
-  { id: "hardware", label: "Hardware, IoT & RF", icon: "🔌" },
-  { id: "reversing", label: "Reverse Engineering", icon: "⚙️" },
-  { id: "blueteam", label: "Blue Team & Defensive Ops", icon: "🛡️" },
-  { id: "forensics", label: "Forensics & OSINT", icon: "🕵️" },
-  { id: "ai", label: "AI & LLM Red Teaming", icon: "🧠" },
+  { id: "web", label: "Web & API Exploitation" },
+  { id: "pwn", label: "Binary Exploitation & Pwn" },
+  { id: "crypto", label: "Cryptography & Math" },
+  { id: "hardware", label: "Hardware, IoT & RF" },
+  { id: "reversing", label: "Reverse Engineering" },
+  { id: "blueteam", label: "Blue Team & Defensive Ops" },
+  { id: "forensics", label: "Forensics & OSINT" },
+  { id: "ai", label: "AI & LLM Red Teaming" },
 ];
 
 const SECONDARY_ROLES = [
-  { id: "speaker", label: "Interested in Speaking / CFP", icon: "🎙️" },
-  { id: "sponsor", label: "Sponsorship / Organization Partner", icon: "🤝" },
-  { id: "village", label: "Want to Host / Propose a Village Lab", icon: "🔬" },
-  { id: "volunteer", label: "Crew & Community Volunteer", icon: "🛡️" },
+  { id: "speaker", label: "Interested in Speaking / CFP" },
+  { id: "sponsor", label: "Sponsorship / Organization Partner" },
+  { id: "village", label: "Want to Host / Propose a Village Lab" },
+  { id: "volunteer", label: "Crew & Community Volunteer" },
 ];
 
 export function EarlyAccessForm() {
@@ -186,15 +186,15 @@ export function EarlyAccessForm() {
 
         <div className="rounded-2xl border border-line bg-void/90 p-5 font-[family-name:var(--font-mono)] text-xs text-fg-dim text-left space-y-2.5 max-w-lg mx-auto shadow-inner leading-relaxed">
           <p className="text-fg-strong font-medium flex items-center gap-2">
-            <span className="text-primary font-bold">✓</span>
+            <span className="text-primary font-bold">•</span>
             <span>Coordinates &amp; track profile saved to the Lagos 2027 dispatch queue.</span>
           </p>
           <p className="flex items-center gap-2">
-            <span className="text-primary font-bold">✓</span>
+            <span className="text-primary font-bold">•</span>
             <span>You will be the <strong>first to receive direct email dispatches</strong> when ticket waves, hardware badge allocations, and venue locations are announced.</span>
           </p>
           <p className="flex items-center gap-2">
-            <span className="text-secondary font-bold">✓</span>
+            <span className="text-secondary font-bold">•</span>
             <span>Keep your confirmation credentials below for waitlist sequence verification.</span>
           </p>
         </div>
@@ -294,9 +294,9 @@ export function EarlyAccessForm() {
                     </span>
                   </div>
 
-                  {/* Title & Icon */}
+                  {/* Title & Code */}
                   <div className="flex items-center gap-2.5">
-                    <span className="text-2xl">{t.icon}</span>
+                    <span className="font-[family-name:var(--font-mono)] text-xs text-primary font-bold">[{t.code}]</span>
                     <div>
                       <h4 className="font-[family-name:var(--font-display)] text-base font-bold text-fg-strong leading-tight">
                         {t.title}
@@ -328,7 +328,6 @@ export function EarlyAccessForm() {
           <div className="rounded-2xl border border-line-bright/80 bg-void/90 p-5 space-y-4 shadow-xl backdrop-blur-md animate-fade-in">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-line pb-3">
               <div className="flex items-center gap-2">
-                <span className="text-xl">{activeTrack.icon}</span>
                 <span className="font-[family-name:var(--font-display)] text-sm font-bold uppercase text-fg-strong">
                   {activeTrack.title} — Track Specifications
                 </span>
@@ -346,9 +345,8 @@ export function EarlyAccessForm() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
               {/* Requirements & Things Needed */}
               <div className="rounded-xl border border-line/80 bg-surface/70 p-3.5 space-y-2">
-                <span className="mono-caps text-[10px] text-primary font-bold block flex items-center gap-1.5">
-                  <span>📋</span>
-                  <span>Requirements &amp; Things You Need:</span>
+                <span className="mono-caps text-[10px] text-primary font-bold block">
+                  Requirements &amp; Things You Need:
                 </span>
                 <ul className="space-y-1.5 text-[11px] font-[family-name:var(--font-body)] text-fg-dim">
                   {activeTrack.requirements.map((req, i) => (
@@ -359,7 +357,7 @@ export function EarlyAccessForm() {
                   ))}
                   {activeTrack.equipmentNeeded.map((eq, i) => (
                     <li key={`eq-${i}`} className="flex items-start gap-1.5 text-fg-strong">
-                      <span className="text-secondary font-bold shrink-0">💻</span>
+                      <span className="text-secondary font-bold shrink-0">[GEAR]</span>
                       <span><strong>Gear:</strong> {eq}</span>
                     </li>
                   ))}
@@ -368,14 +366,13 @@ export function EarlyAccessForm() {
 
               {/* Activities You Can Join */}
               <div className="rounded-xl border border-line/80 bg-surface/70 p-3.5 space-y-2">
-                <span className="mono-caps text-[10px] text-secondary font-bold block flex items-center gap-1.5">
-                  <span>⚡</span>
-                  <span>Activities You Can Join:</span>
+                <span className="mono-caps text-[10px] text-secondary font-bold block">
+                  Activities You Can Join:
                 </span>
                 <ul className="space-y-1.5 text-[11px] font-[family-name:var(--font-body)] text-fg-dim">
                   {activeTrack.activities.map((act, i) => (
                     <li key={i} className="flex items-start gap-1.5">
-                      <span className="text-secondary font-bold shrink-0">✓</span>
+                      <span className="text-secondary font-bold shrink-0">•</span>
                       <span>{act}</span>
                     </li>
                   ))}
@@ -391,7 +388,6 @@ export function EarlyAccessForm() {
       {selectedTrack === "team" && (
         <div className="rounded-2xl border border-secondary/40 bg-surface-2/80 p-5 space-y-4 animate-scale-in">
           <div className="flex items-center gap-2 border-b border-line pb-2.5">
-            <span className="text-lg">🛡️</span>
             <span className="font-[family-name:var(--font-display)] text-sm font-bold uppercase text-fg-strong">
               Squad Specifications (Team Registration)
             </span>
@@ -437,7 +433,6 @@ export function EarlyAccessForm() {
         <div className="rounded-2xl border border-primary/40 bg-surface-2/80 p-5 space-y-4 animate-scale-in">
           <div className="flex items-center justify-between border-b border-line pb-2.5">
             <div className="flex items-center gap-2">
-              <span className="text-lg">🤝</span>
               <span className="font-[family-name:var(--font-display)] text-sm font-bold uppercase text-fg-strong">
                 Select Your Core Skill Focus (Matchmaking Profile)
               </span>
@@ -462,7 +457,6 @@ export function EarlyAccessForm() {
                   defaultChecked={s.id === "web" || s.id === "blueteam"}
                   className="h-4 w-4 rounded-md accent-primary bg-void border-line text-primary focus:ring-0 cursor-pointer shrink-0"
                 />
-                <span className="text-base shrink-0">{s.icon}</span>
                 <span className="font-medium text-fg-strong truncate">{s.label}</span>
               </label>
             ))}
@@ -545,7 +539,6 @@ export function EarlyAccessForm() {
                 className="h-4 w-4 rounded-md accent-primary bg-void border-line text-primary focus:ring-0 cursor-pointer shrink-0"
               />
               <span className="flex items-center gap-2 min-w-0">
-                <span className="text-base shrink-0">{r.icon}</span>
                 <span className="whitespace-normal leading-tight font-medium text-fg-strong">{r.label}</span>
               </span>
             </label>
@@ -564,7 +557,7 @@ export function EarlyAccessForm() {
         </SubmitButton>
 
         <p className="text-center font-[family-name:var(--font-mono)] text-[11px] text-fg-muted">
-          ⚡ <strong>Waitlist Guarantee:</strong> You will be the first to receive email updates when ticket allocations, hardware badges, and official dates are released.
+          <strong>Waitlist Guarantee:</strong> You will be the first to receive email updates when ticket allocations, hardware badges, and official dates are released.
         </p>
       </div>
     </form>

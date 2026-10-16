@@ -10,7 +10,7 @@ export const metadata = {
 
 const TRACK_HIGHLIGHTS = [
   {
-    icon: "🎧",
+    code: "TRACK 01",
     tag: "LIMITED SLOTS",
     title: "Individual Observer",
     subtitle: "Listen & Learn",
@@ -19,7 +19,7 @@ const TRACK_HIGHLIGHTS = [
     border: "border-line/80",
   },
   {
-    icon: "⚡",
+    code: "TRACK 02",
     tag: "HANDS-ON",
     title: "Solo Hackalong",
     subtitle: "Bring Your Own Rig",
@@ -28,7 +28,7 @@ const TRACK_HIGHLIGHTS = [
     border: "border-primary/40",
   },
   {
-    icon: "🛡️",
+    code: "TRACK 03",
     tag: "2-5 OPERATORS",
     title: "Team Registration",
     subtitle: "Squad CTF Warfare",
@@ -37,7 +37,7 @@ const TRACK_HIGHLIGHTS = [
     border: "border-secondary/40",
   },
   {
-    icon: "🤝",
+    code: "TRACK 04",
     tag: "FREE AGENT",
     title: "Team Matchmaking",
     subtitle: "Find Teammates",
@@ -89,7 +89,7 @@ export default function RegisterPage() {
               className={`rounded-2xl border ${t.border} bg-surface/80 p-4 transition-all duration-200 hover:bg-surface-2 hover:-translate-y-0.5 hover:shadow-lg`}
             >
               <div className="flex items-center justify-between">
-                <span className="text-2xl">{t.icon}</span>
+                <span className="font-[family-name:var(--font-mono)] text-xs text-primary font-bold">[{t.code}]</span>
                 <span className="rounded-full bg-void px-2 py-0.5 font-[family-name:var(--font-mono)] text-[10px] font-bold uppercase tracking-wider text-fg-muted border border-line">
                   {t.tag}
                 </span>
@@ -126,15 +126,15 @@ export default function RegisterPage() {
         {/* Bottom Trust & Assurance Indicators */}
         <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4 text-center font-[family-name:var(--font-mono)] text-xs text-fg-muted">
           <div className="rounded-2xl border border-line/60 bg-surface/40 p-4">
-            <span className="text-primary font-bold block mb-1">🔒 PRIVACY &amp; SECURITY</span>
+            <span className="text-primary font-bold block mb-1">PRIVACY &amp; SECURITY</span>
             <span>Zero spam. Data is strictly utilized for festival credentials and badge issuance.</span>
           </div>
           <div className="rounded-2xl border border-line/60 bg-surface/40 p-4">
-            <span className="text-primary font-bold block mb-1">⚡ FIRST IN LINE</span>
+            <span className="text-primary font-bold block mb-1">FIRST IN LINE</span>
             <span>Registered waitlist members receive guaranteed 48-hour early ticket reservation access.</span>
           </div>
           <div className="rounded-2xl border border-line/60 bg-surface/40 p-4">
-            <span className="text-primary font-bold block mb-1">🤝 SQUAD FORMATION</span>
+            <span className="text-primary font-bold block mb-1">SQUAD FORMATION</span>
             <span>Team matchmaking connects solo operators with complementary crews before Day 1.</span>
           </div>
         </div>
