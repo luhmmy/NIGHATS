@@ -3,7 +3,6 @@ import Image from "next/image";
 import { LandingNav } from "./landing-nav";
 import { CountUp } from "@/components/count-up";
 import { Reveal } from "@/components/reveal";
-import { EarlyAccessForm } from "@/components/early-access-form";
 import { Ticker } from "@/components/ticker";
 import { CyberRotatingText } from "@/components/cyber-rotating-text";
 import { InteractiveTerminal } from "@/components/interactive-terminal";
@@ -212,13 +211,13 @@ export default function Home() {
 
             {/* Curvier Pill CTAs (Update Line) */}
             <div className="flex flex-wrap items-center gap-3 pt-2">
-              <a
-                href="#register"
+              <Link
+                href="/register"
                 className="flex items-center gap-2 rounded-full bg-primary px-8 py-4 font-[family-name:var(--font-mono)] text-xs font-bold uppercase tracking-wider text-on-primary transition-all duration-200 hover:bg-primary-bright hover:shadow-[0_0_24px_rgba(18,184,90,0.45)] hover:-translate-y-0.5 active:scale-95 shadow-[0_0_14px_rgba(18,184,90,0.25)]"
               >
                 <span>Register for Waitlist</span>
                 <span className="font-sans text-sm">→</span>
-              </a>
+              </Link>
               <a
                 href="#matrix"
                 className="flex items-center gap-2 rounded-full border border-line bg-surface/80 px-8 py-4 font-[family-name:var(--font-mono)] text-xs uppercase tracking-wider text-fg transition-all duration-200 hover:border-primary hover:text-primary hover:bg-surface-2 hover:-translate-y-0.5 active:scale-95"
@@ -267,88 +266,180 @@ export default function Home() {
       {/* CONTINUOUS MARQUEE MOTION TICKER */}
       <Ticker />
 
-      {/* SECTION 2: OFFICIAL WAITLIST & TRACK REGISTRATION */}
+      {/* SECTION 2: ATTENDANCE TRACKS & REGISTRATION BRIEFING */}
       <section id="register" className="w-full border-b border-line bg-surface/40 py-20 px-4 lg:px-8 scroll-mt-16">
         <div id="early-dispatch" />
         <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-12">
-            {/* Left: Dispatch Briefing */}
-            <div className="flex flex-col gap-6 lg:col-span-5">
-              <span className="mono-caps text-primary">OFFICIAL WAITLIST &amp; REGISTRATION</span>
-              <h2 className="font-[family-name:var(--font-display)] text-3xl font-bold uppercase tracking-tight text-fg-strong md:text-4xl">
+          <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-line/70 pb-8">
+            <div className="max-w-2xl space-y-3">
+              <div className="inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/10 px-3.5 py-1 font-[family-name:var(--font-mono)] text-xs uppercase tracking-wider text-primary font-bold shadow-[0_0_12px_rgba(18,184,90,0.2)]">
+                <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
+                OFFICIAL ATTENDANCE VECTORS
+              </div>
+              <h2 className="font-[family-name:var(--font-display)] text-3xl font-bold uppercase tracking-tight text-fg-strong md:text-5xl">
                 Choose Your Track &amp; Join the Waitlist.
               </h2>
-              <p className="font-[family-name:var(--font-body)] text-sm leading-relaxed text-fg-dim">
-                NIGHATS 1.0 features 4 specialized attendance tracks. Register your operational vector today to be first in line when ticket waves, hardware badge allocations, and CTF access are dispatched.
+              <p className="font-[family-name:var(--font-body)] text-sm sm:text-base leading-relaxed text-fg-dim">
+                NIGHATS 1.0 features 4 specialized attendance tracks. Register your operational vector on our dedicated registration portal to be first in line when ticket waves, hardware badge allocations, and CTF access are dispatched.
               </p>
-
-              <div className="space-y-3.5 rounded-3xl border border-line/80 bg-surface-2/80 p-6 shadow-xl backdrop-blur-md">
-                <div className="flex items-start gap-3">
-                  <span className="text-xl shrink-0">🎧</span>
-                  <div>
-                    <h4 className="font-[family-name:var(--font-display)] text-sm font-semibold text-fg-strong">
-                      Individual Observer (Limited)
-                    </h4>
-                    <p className="mt-0.5 font-[family-name:var(--font-body)] text-xs text-fg-dim">
-                      Come and listen. Strictly capped slots for keynotes, disclosures, and panels. No laptop required.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3 border-t border-line/60 pt-3">
-                  <span className="text-xl shrink-0">⚡</span>
-                  <div>
-                    <h4 className="font-[family-name:var(--font-display)] text-sm font-semibold text-fg-strong">
-                      Solo Hackalong (Hands-On)
-                    </h4>
-                    <p className="mt-0.5 font-[family-name:var(--font-body)] text-xs text-fg-dim">
-                      Bring your own laptop. Direct bench access to physical lockpicking, hardware labs, and solo CTF bounties.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3 border-t border-line/60 pt-3">
-                  <span className="text-xl shrink-0">🛡️</span>
-                  <div>
-                    <h4 className="font-[family-name:var(--font-display)] text-sm font-semibold text-fg-strong">
-                      Team Registration (Squad)
-                    </h4>
-                    <p className="mt-0.5 font-[family-name:var(--font-body)] text-xs text-fg-dim">
-                      Register a pre-formed crew of 2 to 5 operators for the 36H CTF and live attack-defense network warfare.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3 border-t border-line/60 pt-3">
-                  <span className="text-xl shrink-0">🤝</span>
-                  <div>
-                    <h4 className="font-[family-name:var(--font-display)] text-sm font-semibold text-fg-strong">
-                      Team Matchmaking (Looking for Squad)
-                    </h4>
-                    <p className="mt-0.5 font-[family-name:var(--font-body)] text-xs text-fg-dim">
-                      Coming solo? We match your skills with complementary hackers during the Day 1 Squad Formation Mixer.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="rounded-2xl border border-line bg-void/80 p-4 font-[family-name:var(--font-mono)] text-xs text-fg-dim">
-                <span className="font-semibold text-primary">WAITLIST GUARANTEE:</span> Registering locks your sequence position. You will be the first notified via secure email when ticket drops and badge reservations go live before public announcement.
-              </div>
             </div>
+            <div>
+              <Link
+                href="/register"
+                className="inline-flex items-center gap-2.5 rounded-full bg-primary px-8 py-4 font-[family-name:var(--font-mono)] text-xs font-bold uppercase tracking-wider text-on-primary hover:bg-primary-bright hover:shadow-[0_0_24px_rgba(18,184,90,0.5)] active:scale-95 transition-all shadow-[0_0_16px_rgba(18,184,90,0.25)]"
+              >
+                <span>Go to Registration Portal</span>
+                <span className="text-sm">→</span>
+              </Link>
+            </div>
+          </div>
 
-            {/* Right: Curvier Multi-Role Interest Form */}
-            <div className="rounded-3xl border border-line/90 bg-surface/90 p-6 sm:p-8 shadow-2xl backdrop-blur-xl lg:col-span-7">
-              <div className="mb-6 flex items-center justify-between border-b border-line pb-4 font-[family-name:var(--font-mono)] text-xs text-fg-muted">
-                <span className="font-semibold text-fg-strong text-sm">Official Waitlist Registration</span>
-                <span className="text-primary font-medium flex items-center gap-1.5">
-                  <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-                  Accepting Waitlist Registrations
+          {/* 4 Track Cards Grid */}
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
+            {/* Card 1 */}
+            <div className="group rounded-3xl border border-line/80 bg-surface/90 p-6 flex flex-col justify-between transition-all duration-300 hover:border-fg-strong/40 hover:-translate-y-1 hover:shadow-xl">
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-3xl">🎧</span>
+                  <span className="rounded-full bg-void px-2.5 py-1 font-[family-name:var(--font-mono)] text-[10px] font-bold uppercase tracking-wider text-fg-muted border border-line">
+                    LIMITED SEATS
+                  </span>
+                </div>
+                <h3 className="font-[family-name:var(--font-display)] text-lg font-bold text-fg-strong">
+                  Individual Observer
+                </h3>
+                <p className="mt-1 font-[family-name:var(--font-mono)] text-xs text-fg-dim font-medium">
+                  Listen &amp; Learn Track
+                </p>
+                <p className="mt-3 font-[family-name:var(--font-body)] text-xs text-fg-dim leading-relaxed">
+                  Keynotes, village demos, panels, and live research talks. Strictly capped capacity for passive attendees. No laptop required.
+                </p>
+              </div>
+              <div className="mt-6 pt-4 border-t border-line/60">
+                <span className="font-[family-name:var(--font-mono)] text-[11px] text-fg-muted block mb-3">
+                  ✓ Talk Access • ✓ Community Pass
                 </span>
+                <Link
+                  href="/register"
+                  className="block text-center rounded-full border border-line bg-surface-2 py-2.5 font-[family-name:var(--font-mono)] text-xs font-semibold uppercase tracking-wider text-fg hover:border-primary hover:text-primary transition-all"
+                >
+                  Register Observer →
+                </Link>
               </div>
-
-              <EarlyAccessForm />
             </div>
+
+            {/* Card 2 */}
+            <div className="group rounded-3xl border border-primary/50 bg-surface/90 p-6 flex flex-col justify-between transition-all duration-300 hover:border-primary hover:-translate-y-1 hover:shadow-[0_0_24px_rgba(18,184,90,0.15)]">
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-3xl">⚡</span>
+                  <span className="rounded-full bg-primary/10 px-2.5 py-1 font-[family-name:var(--font-mono)] text-[10px] font-bold uppercase tracking-wider text-primary border border-primary/30">
+                    POPULAR • HANDS-ON
+                  </span>
+                </div>
+                <h3 className="font-[family-name:var(--font-display)] text-lg font-bold text-fg-strong">
+                  Solo Hackalong
+                </h3>
+                <p className="mt-1 font-[family-name:var(--font-mono)] text-xs text-primary font-medium">
+                  Bring Your Own Rig (BYOD)
+                </p>
+                <p className="mt-3 font-[family-name:var(--font-body)] text-xs text-fg-dim leading-relaxed">
+                  Hands-on bench access, physical lockpicking, hardware reverse engineering, wireless ranges, and solo CTF challenges.
+                </p>
+              </div>
+              <div className="mt-6 pt-4 border-t border-line/60">
+                <span className="font-[family-name:var(--font-mono)] text-[11px] text-primary block mb-3">
+                  ✓ Bench Power • ✓ Lab Tools • ✓ Badge
+                </span>
+                <Link
+                  href="/register"
+                  className="block text-center rounded-full bg-primary py-2.5 font-[family-name:var(--font-mono)] text-xs font-bold uppercase tracking-wider text-on-primary hover:bg-primary-bright shadow-[0_0_14px_rgba(18,184,90,0.3)] transition-all"
+                >
+                  Register Solo →
+                </Link>
+              </div>
+            </div>
+
+            {/* Card 3 */}
+            <div className="group rounded-3xl border border-secondary/50 bg-surface/90 p-6 flex flex-col justify-between transition-all duration-300 hover:border-secondary hover:-translate-y-1 hover:shadow-xl">
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-3xl">🛡️</span>
+                  <span className="rounded-full bg-secondary/10 px-2.5 py-1 font-[family-name:var(--font-mono)] text-[10px] font-bold uppercase tracking-wider text-secondary border border-secondary/30">
+                    2–5 MEMBERS
+                  </span>
+                </div>
+                <h3 className="font-[family-name:var(--font-display)] text-lg font-bold text-fg-strong">
+                  Team Registration
+                </h3>
+                <p className="mt-1 font-[family-name:var(--font-mono)] text-xs text-secondary font-medium">
+                  Squad CTF &amp; Warfare
+                </p>
+                <p className="mt-3 font-[family-name:var(--font-body)] text-xs text-fg-dim leading-relaxed">
+                  Pre-formed crews competing head-to-head in the 36-hour non-stop Attack-Defense warfare and Capture The Flag championship.
+                </p>
+              </div>
+              <div className="mt-6 pt-4 border-t border-line/60">
+                <span className="font-[family-name:var(--font-mono)] text-[11px] text-secondary block mb-3">
+                  ✓ Squad Table • ✓ CTF Slot • ✓ Scoreboard
+                </span>
+                <Link
+                  href="/register"
+                  className="block text-center rounded-full border border-secondary/50 bg-surface-2 py-2.5 font-[family-name:var(--font-mono)] text-xs font-semibold uppercase tracking-wider text-secondary hover:bg-secondary hover:text-on-secondary transition-all"
+                >
+                  Register Squad →
+                </Link>
+              </div>
+            </div>
+
+            {/* Card 4 */}
+            <div className="group rounded-3xl border border-line/80 bg-surface/90 p-6 flex flex-col justify-between transition-all duration-300 hover:border-primary-bright/60 hover:-translate-y-1 hover:shadow-xl">
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-3xl">🤝</span>
+                  <span className="rounded-full bg-void px-2.5 py-1 font-[family-name:var(--font-mono)] text-[10px] font-bold uppercase tracking-wider text-primary-bright border border-line">
+                    FREE AGENTS
+                  </span>
+                </div>
+                <h3 className="font-[family-name:var(--font-display)] text-lg font-bold text-fg-strong">
+                  Team Matchmaking
+                </h3>
+                <p className="mt-1 font-[family-name:var(--font-mono)] text-xs text-primary-bright font-medium">
+                  Skill-Based Pairing
+                </p>
+                <p className="mt-3 font-[family-name:var(--font-body)] text-xs text-fg-dim leading-relaxed">
+                  Solo hackers looking for a squad. Connect with complementary operators (Web, Pwn, Crypto, Blue Team) during the Day 1 Mixer.
+                </p>
+              </div>
+              <div className="mt-6 pt-4 border-t border-line/60">
+                <span className="font-[family-name:var(--font-mono)] text-[11px] text-fg-muted block mb-3">
+                  ✓ Skill Profile • ✓ Mixer Invite
+                </span>
+                <Link
+                  href="/register"
+                  className="block text-center rounded-full border border-line bg-surface-2 py-2.5 font-[family-name:var(--font-mono)] text-xs font-semibold uppercase tracking-wider text-fg hover:border-primary hover:text-primary transition-all"
+                >
+                  Join Matchmaking →
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Waitlist Guarantee Ribbon */}
+          <div className="mt-8 rounded-2xl border border-line-bright/60 bg-void/90 p-5 flex flex-col sm:flex-row items-center justify-between gap-4 font-[family-name:var(--font-mono)] text-xs">
+            <div className="flex items-center gap-3">
+              <span className="text-xl">⚡</span>
+              <div>
+                <span className="font-bold text-primary">OFFICIAL WAITLIST GUARANTEE:</span>
+                <span className="text-fg-dim ml-1.5">Registering on any track locks your sequence position. You will be the first to receive invitation dispatches, venue coordinates, and hardware badge reservations before public release.</span>
+              </div>
+            </div>
+            <Link
+              href="/register"
+              className="shrink-0 rounded-full bg-primary/10 border border-primary/40 px-5 py-2 font-bold uppercase tracking-wider text-primary hover:bg-primary hover:text-on-primary transition-all"
+            >
+              Join Waitlist Now →
+            </Link>
           </div>
         </div>
       </section>
@@ -607,13 +698,13 @@ export default function Home() {
             Individual observers, solo hackalong operators, and teams: join the official waitlist today. Subscribers will be the first to receive invitation keys, venue access, and badge reservation coordinates.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <a
-              href="#register"
+            <Link
+              href="/register"
               className="group flex items-center gap-2.5 rounded-full bg-primary px-8 py-4 font-[family-name:var(--font-mono)] text-xs font-bold uppercase tracking-wider text-on-primary transition-all duration-200 hover:bg-primary-bright hover:shadow-[0_0_24px_rgba(18,184,90,0.5)] hover:-translate-y-0.5 active:scale-95"
             >
               <span>Register for Waitlist</span>
               <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
-            </a>
+            </Link>
             <Link
               href="/contact"
               className="flex items-center gap-2 rounded-full border border-line bg-surface/80 px-7 py-4 font-[family-name:var(--font-mono)] text-xs uppercase tracking-wider text-fg transition-all duration-200 hover:border-primary hover:text-primary hover:bg-surface-2 hover:-translate-y-0.5 active:scale-95"
@@ -651,15 +742,15 @@ export default function Home() {
 
             <div className="flex flex-col gap-2.5 md:col-span-3">
               <span className="mono-caps text-primary">Documentation &amp; Policy</span>
-              <a href="/#manifesto" className="font-[family-name:var(--font-body)] text-xs text-fg-dim transition-colors hover:text-fg-strong">
+              <Link href="/#manifesto" className="font-[family-name:var(--font-body)] text-xs text-fg-dim transition-colors hover:text-fg-strong">
                 Hacker Manifesto
-              </a>
-              <a href="/#matrix" className="font-[family-name:var(--font-body)] text-xs text-fg-dim transition-colors hover:text-fg-strong">
+              </Link>
+              <Link href="/#matrix" className="font-[family-name:var(--font-body)] text-xs text-fg-dim transition-colors hover:text-fg-strong">
                 Village &amp; Labs Matrix
-              </a>
-              <a href="/#terminal" className="font-[family-name:var(--font-body)] text-xs text-fg-dim transition-colors hover:text-fg-strong">
+              </Link>
+              <Link href="/#terminal" className="font-[family-name:var(--font-body)] text-xs text-fg-dim transition-colors hover:text-fg-strong">
                 Interactive Directory
-              </a>
+              </Link>
               <Link href="/contact" className="font-[family-name:var(--font-body)] text-xs text-fg-dim transition-colors hover:text-fg-strong">
                 Contact &amp; Support
               </Link>
@@ -671,12 +762,12 @@ export default function Home() {
                 Sign up for updates on dates, venue confirmation, and early-bird tickets.
               </p>
               <div className="pt-1">
-                <a
-                  href="#early-dispatch"
+                <Link
+                  href="/register"
                   className="inline-block rounded-full bg-primary px-5 py-2.5 font-[family-name:var(--font-mono)] text-xs font-semibold uppercase tracking-wider text-on-primary hover:bg-primary-bright transition-all shadow-[0_0_12px_rgba(18,184,90,0.25)]"
                 >
-                  Join the Update List
-                </a>
+                  Join the Waitlist
+                </Link>
               </div>
             </div>
           </div>
